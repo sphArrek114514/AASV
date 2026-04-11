@@ -1,4 +1,5 @@
-# AASV原子结构可视化（全称Arrek-studio Atomic Structure Visualization Program）
+# AASV原子结构可视化
+#（全称Arrek-studio Atomic Structure Visualization Program）
 
 ## 项目概述
 这是一个功能丰富的原子结构可视化与化学学习工具，旨在帮助学生更直观地了解原子结构、周期律以及进行互动学习。
