@@ -15,6 +15,29 @@
             font-family: Arial, sans-serif;
             overflow: auto;
             padding-top: 120px;
+            position: relative;
+        }
+
+        .bg-image-container {
+            position: fixed;
+            top: 0;
+            width: 600px;
+            height: 100vh;
+            z-index: 9991 !important;
+            opacity: 0.3;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .bg-image-left {
+            left: 20px;
+        }
+
+        .bg-image-right {
+            right: 20px;
         }
 
         .top-fixed {
@@ -386,10 +409,15 @@
             pointer-events: none;
         }
 
-        .property-btn {
+        .property-btn-container {
             position: fixed;
             bottom: 20px;
             left: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+        .property-btn {
             padding: 10px 20px;
             background: #2a2a2a;
             color: #fff;
@@ -398,11 +426,10 @@
             font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            z-index: 1000;
             box-shadow: 0 0 15px rgba(147, 51, 234, 0.6);
             transition: all 0.3s ease;
         }
-        #propertyBtn:hover {
+        #propertyBtn:hover, #electronFillBtn:hover {
             background: #9333ea;
             color: #000;
             transform: scale(1.05);
@@ -739,6 +766,7 @@
             cursor: pointer;
             transition: opacity 0.5s ease, visibility 0.5s ease;
         }
+        /* 老A子制作，侵权必究 */
         .periodic-table {
             display: flex;
             flex-direction: column;
@@ -2173,12 +2201,15 @@
             </div>
         </div>
     </div>
-
+    <!-- 老A子制作，侵权必究 -->
     <div class="atomic-number" id="atomicNumber">6</div>
     <div class="element-symbol" id="elementSymbol">C</div>
     <div class="element-name" id="elementName">碳</div>
     <!-- 左下角元素基本信息容器 -->
-    <button class="property-btn" id="propertyBtn">属性</button>
+    <div class="property-btn-container">
+        <button class="property-btn" id="propertyBtn">属性</button>
+        <button class="property-btn" id="electronFillBtn">电子填充</button>
+    </div>
     </div>
 
     <!-- 熔沸点进度条 -->
@@ -2497,13 +2528,13 @@
                         <span class="chapter-number">3</span>
                         <span class="chapter-text">化合价</span>
                     </button>
-                    <button class="knowledge-chapter-btn disabled" id="chapter4Btn">
+                    <button class="knowledge-chapter-btn" id="chapter4Btn">
                         <span class="chapter-number">4</span>
                         <span class="chapter-text">相对原子质量和式量</span>
                     </button>
-                    <button class="knowledge-chapter-btn disabled" id="chapter5Btn">
+                    <button class="knowledge-chapter-btn" id="chapter5Btn">
                         <span class="chapter-number">5</span>
-                        <span class="chapter-text">化学键-共价键</span>
+                        <span class="chapter-text">化学键：离子键</span>
                     </button>
                 </div>
             </div>
@@ -2719,6 +2750,244 @@
         </div>
     </div>
 
+    <!-- 电子填充弹窗 -->
+    <div class="more-modal" id="electronFillModal">
+        <div class="more-modal-content">
+            <div class="more-modal-header">
+                <button class="back-btn" id="backElectronFillModal">←</button>
+                <h3>电子轨道填充状态</h3>
+                <button class="close-btn" id="closeElectronFillModal">&times;</button>
+            </div>
+            <div class="more-modal-body">
+                <div class="electron-fill-container">
+                    <div class="electron-row">
+                        <div class="electron-orbital">
+                            <span class="orbital-label">7s</span>
+                            <div class="orbital-box" data-orbital="7s"></div>
+                        </div>
+                        <div class="electron-orbital">
+                            <span class="orbital-label">7p</span>
+                            <div class="orbital-boxes">
+                                <div class="orbital-box" data-orbital="7p-1"></div>
+                                <div class="orbital-box" data-orbital="7p-2"></div>
+                                <div class="orbital-box" data-orbital="7p-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="electron-row">
+                        <div class="electron-orbital">
+                            <span class="orbital-label">6s</span>
+                            <div class="orbital-box" data-orbital="6s"></div>
+                        </div>
+                        <div class="electron-orbital">
+                            <span class="orbital-label">6p</span>
+                            <div class="orbital-boxes">
+                                <div class="orbital-box" data-orbital="6p-1"></div>
+                                <div class="orbital-box" data-orbital="6p-2"></div>
+                                <div class="orbital-box" data-orbital="6p-3"></div>
+                            </div>
+                        </div>
+                        <div class="electron-orbital">
+                            <span class="orbital-label">6d</span>
+                            <div class="orbital-boxes">
+                                <div class="orbital-box" data-orbital="6d-1"></div>
+                                <div class="orbital-box" data-orbital="6d-2"></div>
+                                <div class="orbital-box" data-orbital="6d-3"></div>
+                                <div class="orbital-box" data-orbital="6d-4"></div>
+                                <div class="orbital-box" data-orbital="6d-5"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="electron-row">
+                        <div class="electron-orbital">
+                            <span class="orbital-label">5s</span>
+                            <div class="orbital-box" data-orbital="5s"></div>
+                        </div>
+                        <div class="electron-orbital">
+                            <span class="orbital-label">5p</span>
+                            <div class="orbital-boxes">
+                                <div class="orbital-box" data-orbital="5p-1"></div>
+                                <div class="orbital-box" data-orbital="5p-2"></div>
+                                <div class="orbital-box" data-orbital="5p-3"></div>
+                            </div>
+                        </div>
+                        <div class="electron-orbital">
+                            <span class="orbital-label">5d</span>
+                            <div class="orbital-boxes">
+                                <div class="orbital-box" data-orbital="5d-1"></div>
+                                <div class="orbital-box" data-orbital="5d-2"></div>
+                                <div class="orbital-box" data-orbital="5d-3"></div>
+                                <div class="orbital-box" data-orbital="5d-4"></div>
+                                <div class="orbital-box" data-orbital="5d-5"></div>
+                            </div>
+                        </div>
+                        <div class="electron-orbital">
+                            <span class="orbital-label">5f</span>
+                            <div class="orbital-boxes">
+                                <div class="orbital-box" data-orbital="5f-1"></div>
+                                <div class="orbital-box" data-orbital="5f-2"></div>
+                                <div class="orbital-box" data-orbital="5f-3"></div>
+                                <div class="orbital-box" data-orbital="5f-4"></div>
+                                <div class="orbital-box" data-orbital="5f-5"></div>
+                                <div class="orbital-box" data-orbital="5f-6"></div>
+                                <div class="orbital-box" data-orbital="5f-7"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="electron-row">
+                        <div class="electron-orbital">
+                            <span class="orbital-label">4s</span>
+                            <div class="orbital-box" data-orbital="4s"></div>
+                        </div>
+                        <div class="electron-orbital">
+                            <span class="orbital-label">4p</span>
+                            <div class="orbital-boxes">
+                                <div class="orbital-box" data-orbital="4p-1"></div>
+                                <div class="orbital-box" data-orbital="4p-2"></div>
+                                <div class="orbital-box" data-orbital="4p-3"></div>
+                            </div>
+                        </div>
+                        <div class="electron-orbital">
+                            <span class="orbital-label">4d</span>
+                            <div class="orbital-boxes">
+                                <div class="orbital-box" data-orbital="4d-1"></div>
+                                <div class="orbital-box" data-orbital="4d-2"></div>
+                                <div class="orbital-box" data-orbital="4d-3"></div>
+                                <div class="orbital-box" data-orbital="4d-4"></div>
+                                <div class="orbital-box" data-orbital="4d-5"></div>
+                            </div>
+                        </div>
+                        <div class="electron-orbital">
+                            <span class="orbital-label">4f</span>
+                            <div class="orbital-boxes">
+                                <div class="orbital-box" data-orbital="4f-1"></div>
+                                <div class="orbital-box" data-orbital="4f-2"></div>
+                                <div class="orbital-box" data-orbital="4f-3"></div>
+                                <div class="orbital-box" data-orbital="4f-4"></div>
+                                <div class="orbital-box" data-orbital="4f-5"></div>
+                                <div class="orbital-box" data-orbital="4f-6"></div>
+                                <div class="orbital-box" data-orbital="4f-7"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="electron-row">
+                        <div class="electron-orbital">
+                            <span class="orbital-label">3s</span>
+                            <div class="orbital-box" data-orbital="3s"></div>
+                        </div>
+                        <div class="electron-orbital">
+                            <span class="orbital-label">3p</span>
+                            <div class="orbital-boxes">
+                                <div class="orbital-box" data-orbital="3p-1"></div>
+                                <div class="orbital-box" data-orbital="3p-2"></div>
+                                <div class="orbital-box" data-orbital="3p-3"></div>
+                            </div>
+                        </div>
+                        <div class="electron-orbital">
+                            <span class="orbital-label">3d</span>
+                            <div class="orbital-boxes">
+                                <div class="orbital-box" data-orbital="3d-1"></div>
+                                <div class="orbital-box" data-orbital="3d-2"></div>
+                                <div class="orbital-box" data-orbital="3d-3"></div>
+                                <div class="orbital-box" data-orbital="3d-4"></div>
+                                <div class="orbital-box" data-orbital="3d-5"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="electron-row">
+                        <div class="electron-orbital">
+                            <span class="orbital-label">2s</span>
+                            <div class="orbital-box" data-orbital="2s"></div>
+                        </div>
+                        <div class="electron-orbital">
+                            <span class="orbital-label">2p</span>
+                            <div class="orbital-boxes">
+                                <div class="orbital-box" data-orbital="2p-1"></div>
+                                <div class="orbital-box" data-orbital="2p-2"></div>
+                                <div class="orbital-box" data-orbital="2p-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="electron-row">
+                        <div class="electron-orbital">
+                            <span class="orbital-label">1s</span>
+                            <div class="orbital-box" data-orbital="1s"></div>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    .electron-fill-container {
+                        padding: 20px;
+                        background: rgba(0, 0, 0, 0.3);
+                        border-radius: 8px;
+                        border: 1px solid rgba(147, 51, 234, 0.3);
+                    }
+                    .electron-row {
+                        display: flex;
+                        align-items: center;
+                        gap: 20px;
+                        margin-bottom: 12px;
+                    }
+                    .electron-orbital {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                    }
+                    .orbital-label {
+                        font-size: 14px;
+                        color: #aaa;
+                        width: 35px;
+                        text-align: right;
+                    }
+                    .orbital-box {
+                        width: 30px;
+                        height: 30px;
+                        background: rgba(147, 51, 234, 0.1);
+                        border: 1px solid rgba(147, 51, 234, 0.3);
+                        border-radius: 4px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        position: relative;
+                        overflow: hidden;
+                    }
+                    .orbital-box::before {
+                        content: '';
+                        position: absolute;
+                        left: 50%;
+                        top: 2px;
+                        bottom: 2px;
+                        width: 1px;
+                        background: repeating-linear-gradient(
+                            to bottom,
+                            rgba(147, 51, 234, 0.5) 0px,
+                            rgba(147, 51, 234, 0.5) 3px,
+                            transparent 3px,
+                            transparent 6px
+                        );
+                        transform: translateX(-50%);
+                    }
+                    .orbital-box.filled {
+                        background: rgba(147, 51, 234, 0.7);
+                        border: 1px solid rgba(147, 51, 234, 1);
+                        box-shadow: 0 0 10px rgba(147, 51, 234, 0.8), inset 0 0 5px rgba(147, 51, 234, 0.5);
+                    }
+                    .orbital-box.half-filled {
+                        background: linear-gradient(90deg, rgba(147, 51, 234, 0.5) 50%, rgba(147, 51, 234, 0.1) 50%);
+                    }
+                    .orbital-boxes {
+                        display: flex;
+                        gap: 4px;
+                    }
+                    .electron {
+                        font-size: 16px;
+                        color: #fff;
+                    }
+                </style>
+            </div>
+        </div>
+    </div>
+
     <!-- 使用说明弹窗 -->
     <div class="more-modal" id="usageInfoModal">
         <div class="more-modal-content">
@@ -2878,7 +3147,7 @@
                 <h3>更新日志</h3>
                 <button class="close-btn" id="closeUpdateLogModal">&times;</button>
                 <div style="position: absolute; top: 60px; right: 10px; display: flex; flex-direction: column; align-items: center;">
-                    <div id="updateLogNucleus" style="width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: bold;">B</div>
+                    <div id="updateLogNucleus" style="width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: bold;">O</div>
                 </div>
             </div>
             <div class="more-modal-body">
@@ -2892,7 +3161,7 @@
                     </div>
                     <div class="update-log-item">
                         <span class="update-log-label">更新内容：</span>
-                        <span class="update-log-value">新增元素对比功能，新增全部数据管理，优化动画和UI，网页版（托管）开放</span>
+                        <span class="update-log-value">新增电子轨道填充状态显示，部分元素添加科学家肖像背景装饰，优化动画和UI</span>
                     </div>
                 </div>
             </div>
@@ -2923,7 +3192,7 @@
         </div>
     </div>
 
-    <!-- 元素快寻游戏结果弹窗 -->
+    <!-- 元素快寻游戏结果弹窗 老A子制作，侵权必究 -->
     <div class="more-modal" id="atomFinderResultModal">
         <div class="more-modal-content">
             <div class="more-modal-header">
@@ -2954,6 +3223,9 @@
         </div>
     </div>
 
+    <div class="bg-image-container bg-image-left" id="bgImageLeft"></div>
+    <div class="bg-image-container bg-image-right" id="bgImageRight"></div>
+
     <div class="atomWrapper" id="atomWrapper">
         <div class="atom">
             <div class="nucleus">B</div>
@@ -2969,8 +3241,8 @@
         const startContent = document.querySelector('.start-content');
         
         // 版本元素配置 - 根据版本号自动获取对应元素
-        const VERSION = '7';
-        const UPDATE_DATE = '2026.5.23 15:00';
+        const VERSION = '8';
+        const UPDATE_DATE = '2026.6.19 00:00';
         const IS_PRE_RELEASE = false;
 
         // 获取版本号字符串
@@ -3069,7 +3341,7 @@
             atom.style.cursor = 'pointer';
             atom.style.pointerEvents = 'auto';
             
-            // 点击原子核让它提前消失并爆炸
+            // 点击原子核让它提前消失并爆炸 老A子制作，侵权必究
             atom.addEventListener('click', function() {
                 if (easterEggActive) return;
                 atomClickCount++;
@@ -3299,124 +3571,124 @@
 
         // 完整元素库（包含类别、放射性、原子量、密度、原子半径）
         const elementLibrary = {
-    H:  { k:1, l:null, m:null, n:null, o:null, p:null, q:null, sym:"H", number:1, name:"氢", category:"hydrogen", radioactive:false, synthetic:false, atomicWeight:"1.008", density:"0.0000899 g/cm³", atomicRadius:"53 pm", melting: -259, boiling: -253, halfLife:"稳定", redox:"强还原性", group:"IA" },
-    He: { k:2, l:null, m:null, n:null, o:null, p:null, q:null, sym:"He", number:2, name:"氦", category:"nobleGas", radioactive:false, synthetic:false, atomicWeight:"4.003", density:"0.0001785 g/cm³", atomicRadius:"31 pm", melting: -272, boiling: -269, halfLife:"稳定", redox:"N/A", group:"0" },
-    Li: { k:2, l:1, m:null, n:null, o:null, p:null, q:null, sym:"Li", number:3, name:"锂", category:"alkaliMetal", radioactive:false, synthetic:false, atomicWeight:"6.941", density:"0.534 g/cm³", atomicRadius:"167 pm", melting: 181, boiling: 1342, halfLife:"稳定", redox:"强还原性", group:"IA" },
-    Be: { k:2, l:2, m:null, n:null, o:null, p:null, q:null, sym:"Be", number:4, name:"铍", category:"alkalineEarth", radioactive:false, synthetic:false, atomicWeight:"9.012", density:"1.85 g/cm³", atomicRadius:"112 pm", melting: 1287, boiling: 2471, halfLife:"稳定", redox:"还原性", group:"IIA" },
-    B:  { k:2, l:3, m:null, n:null, o:null, p:null, q:null, sym:"B", number:5, name:"硼", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"10.81", density:"2.34 g/cm³", atomicRadius:"87 pm", melting: 2076, boiling: 3927, halfLife:"稳定", redox:"两性", group:"IIIA" },
-    C:  { k:2, l:4, m:null, n:null, o:null, p:null, q:null, sym:"C", number:6, name:"碳", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"12.01", density:"2.26 g/cm³", atomicRadius:"67 pm", melting: 3550, boiling: 4027, halfLife:"稳定", redox:"两性", group:"IVA" },
-    N:  { k:2, l:5, m:null, n:null, o:null, p:null, q:null, sym:"N", number:7, name:"氮", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"14.01", density:"0.001251 g/cm³", atomicRadius:"56 pm", melting: -210, boiling: -196, halfLife:"稳定", redox:"氧化性", group:"VA" },
-    O:  { k:2, l:6, m:null, n:null, o:null, p:null, q:null, sym:"O", number:8, name:"氧", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"16.00", density:"0.001429 g/cm³", atomicRadius:"48 pm", melting: -219, boiling: -183, halfLife:"稳定", redox:"强氧化性", group:"VIA" },
-    F:  { k:2, l:7, m:null, n:null, o:null, p:null, q:null, sym:"F", number:9, name:"氟", category:"halogen", radioactive:false, synthetic:false, atomicWeight:"19.00", density:"0.001696 g/cm³", atomicRadius:"42 pm", melting: -220, boiling: -188, halfLife:"稳定", redox:"强氧化性", group:"VIIA" },
-    Ne: { k:2, l:8, m:null, n:null, o:null, p:null, q:null, sym:"Ne", number:10, name:"氖", category:"nobleGas", radioactive:false, synthetic:false, atomicWeight:"20.18", density:"0.000900 g/cm³", atomicRadius:"38 pm", melting: -249, boiling: -246, halfLife:"稳定", redox:"N/A", group:"0" },
-    Na: { k:2, l:8, m:1, n:null, o:null, p:null, q:null, sym:"Na", number:11, name:"钠", category:"alkaliMetal", radioactive:false, synthetic:false, atomicWeight:"22.99", density:"0.971 g/cm³", atomicRadius:"190 pm", melting: 98, boiling: 883, halfLife:"稳定", redox:"强还原性", group:"IA" },
-    Mg: { k:2, l:8, m:2, n:null, o:null, p:null, q:null, sym:"Mg", number:12, name:"镁", category:"alkalineEarth", radioactive:false, synthetic:false, atomicWeight:"24.31", density:"1.74 g/cm³", atomicRadius:"145 pm", melting: 650, boiling: 1090, halfLife:"稳定", redox:"强还原性", group:"IIA" },
-    Al: { k:2, l:8, m:3, n:null, o:null, p:null, q:null, sym:"Al", number:13, name:"铝", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"26.98", density:"2.70 g/cm³", atomicRadius:"118 pm", melting: 660, boiling: 2519, halfLife:"稳定", redox:"两性", group:"IIIA" },
-    Si: { k:2, l:8, m:4, n:null, o:null, p:null, q:null, sym:"Si", number:14, name:"硅", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"28.09", density:"2.33 g/cm³", atomicRadius:"111 pm", melting: 1414, boiling: 3265, halfLife:"稳定", redox:"两性", group:"IVA" },
-    P:  { k:2, l:8, m:5, n:null, o:null, p:null, q:null, sym:"P", number:15, name:"磷", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"30.97", density:"1.82 g/cm³", atomicRadius:"98 pm", melting: 44, boiling: 281, halfLife:"稳定", redox:"氧化性", group:"VA" },
-    S:  { k:2, l:8, m:6, n:null, o:null, p:null, q:null, sym:"S", number:16, name:"硫", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"32.07", density:"2.07 g/cm³", atomicRadius:"88 pm", melting: 115, boiling: 445, halfLife:"稳定", redox:"氧化性", group:"VIA" },
-    Cl: { k:2, l:8, m:7, n:null, o:null, p:null, q:null, sym:"Cl", number:17, name:"氯", category:"halogen", radioactive:false, synthetic:false, atomicWeight:"35.45", density:"0.003214 g/cm³", atomicRadius:"79 pm", melting: -102, boiling: -34, halfLife:"稳定", redox:"强氧化性", group:"VIIA" },
-    Ar: { k:2, l:8, m:8, n:null, o:null, p:null, q:null, sym:"Ar", number:18, name:"氩", category:"nobleGas", radioactive:false, synthetic:false, atomicWeight:"39.95", density:"0.001784 g/cm³", atomicRadius:"71 pm", melting: -189, boiling: -186, halfLife:"稳定", redox:"N/A", group:"0" },
-    K:  { k:2, l:8, m:8, n:1, o:null, p:null, q:null, sym:"K", number:19, name:"钾", category:"alkaliMetal", radioactive:false, synthetic:false, atomicWeight:"39.10", density:"0.862 g/cm³", atomicRadius:"243 pm", melting: 64, boiling: 759, halfLife:"稳定", redox:"强还原性", group:"IA" },
-    Ca: { k:2, l:8, m:8, n:2, o:null, p:null, q:null, sym:"Ca", number:20, name:"钙", category:"alkalineEarth", radioactive:false, synthetic:false, atomicWeight:"40.08", density:"1.55 g/cm³", atomicRadius:"194 pm", melting: 842, boiling: 1484, halfLife:"稳定", redox:"强还原性", group:"IIA" },
-    Sc: { k:2, l:8, m:9,  n:2,  o:null, p:null, q:null, sym:"Sc", number:21, name:"钪", category:"transition", radioactive:false, synthetic:false, atomicWeight:"44.96", density:"2.99 g/cm³", atomicRadius:"184 pm", melting: 1541, boiling: 2836, halfLife:"稳定", redox:"还原性", group:"IIIB" },
-    Ti: { k:2, l:8, m:10, n:2,  o:null, p:null, q:null, sym:"Ti", number:22, name:"钛", category:"transition", radioactive:false, synthetic:false, atomicWeight:"47.87", density:"4.51 g/cm³", atomicRadius:"176 pm", melting: 1668, boiling: 3287, halfLife:"稳定", redox:"还原性", group:"IVB" },
-    V:  { k:2, l:8, m:11, n:2,  o:null, p:null, q:null, sym:"V", number:23, name:"钒", category:"transition", radioactive:false, synthetic:false, atomicWeight:"50.94", density:"6.11 g/cm³", atomicRadius:"171 pm", melting: 1910, boiling: 3407, halfLife:"稳定", redox:"还原性", group:"VB" },
-    Cr: { k:2, l:8, m:13, n:1,  o:null, p:null, q:null, sym:"Cr", number:24, name:"铬", category:"transition", radioactive:false, synthetic:false, atomicWeight:"52.00", density:"7.19 g/cm³", atomicRadius:"166 pm", melting: 1907, boiling: 2671, halfLife:"稳定", redox:"两性", group:"VIB" },
-    Mn: { k:2, l:8, m:13, n:2,  o:null, p:null, q:null, sym:"Mn", number:25, name:"锰", category:"transition", radioactive:false, synthetic:false, atomicWeight:"54.94", density:"7.43 g/cm³", atomicRadius:"161 pm", melting: 1246, boiling: 2061, halfLife:"稳定", redox:"两性", group:"VIIB" },
-    Fe: { k:2, l:8, m:14, n:2,  o:null, p:null, q:null, sym:"Fe", number:26, name:"铁", category:"transition", radioactive:false, synthetic:false, atomicWeight:"55.85", density:"7.87 g/cm³", atomicRadius:"156 pm", melting: 1538, boiling: 2861, halfLife:"稳定", redox:"两性", group:"VIII" },
-    Co: { k:2, l:8, m:15, n:2,  o:null, p:null, q:null, sym:"Co", number:27, name:"钴", category:"transition", radioactive:false, synthetic:false, atomicWeight:"58.93", density:"8.90 g/cm³", atomicRadius:"152 pm", melting: 1495, boiling: 2927, halfLife:"稳定", redox:"还原性", group:"VIII" },
-    Ni: { k:2, l:8, m:16, n:2,  o:null, p:null, q:null, sym:"Ni", number:28, name:"镍", category:"transition", radioactive:false, synthetic:false, atomicWeight:"58.69", density:"8.91 g/cm³", atomicRadius:"149 pm", melting: 1455, boiling: 2913, halfLife:"稳定", redox:"还原性", group:"VIII" },
-    Cu: { k:2, l:8, m:18, n:1,  o:null, p:null, q:null, sym:"Cu", number:29, name:"铜", category:"transition", radioactive:false, synthetic:false, atomicWeight:"63.55", density:"8.96 g/cm³", atomicRadius:"145 pm", melting: 1085, boiling: 2562, halfLife:"稳定", redox:"两性", group:"IB" },
-    Zn: { k:2, l:8, m:18, n:2,  o:null, p:null, q:null, sym:"Zn", number:30, name:"锌", category:"transition", radioactive:false, synthetic:false, atomicWeight:"65.38", density:"7.14 g/cm³", atomicRadius:"142 pm", melting: 420, boiling: 907, halfLife:"稳定", redox:"还原性", group:"IIB" },
-    Ga: { k:2, l:8, m:18, n:3,  o:null, p:null, q:null, sym:"Ga", number:31, name:"镓", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"69.72", density:"5.91 g/cm³", atomicRadius:"136 pm", melting: 30, boiling: 2204, halfLife:"稳定", redox:"两性", group:"IIIA" },
-    Ge: { k:2, l:8, m:18, n:4,  o:null, p:null, q:null, sym:"Ge", number:32, name:"锗", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"72.64", density:"5.32 g/cm³", atomicRadius:"123 pm", melting: 938, boiling: 2833, halfLife:"稳定", redox:"两性", group:"IVA" },
-    As: { k:2, l:8, m:18, n:5,  o:null, p:null, q:null, sym:"As", number:33, name:"砷", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"74.92", density:"5.73 g/cm³", atomicRadius:"119 pm", melting: null, boiling: 615, halfLife:"稳定", redox:"两性", group:"VA" },
-    Se: { k:2, l:8, m:18, n:6,  o:null, p:null, q:null, sym:"Se", number:34, name:"硒", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"78.96", density:"4.81 g/cm³", atomicRadius:"116 pm", melting: 221, boiling: 685, halfLife:"稳定", redox:"氧化性", group:"VIA" },
-    Br: { k:2, l:8, m:18, n:7,  o:null, p:null, q:null, sym:"Br", number:35, name:"溴", category:"halogen", radioactive:false, synthetic:false, atomicWeight:"79.90", density:"3.12 g/cm³", atomicRadius:"114 pm", melting: -7, boiling: 59, halfLife:"稳定", redox:"强氧化性", group:"VIIA" },
-    Kr: { k:2, l:8, m:18, n:8,  o:null, p:null, q:null, sym:"Kr", number:36, name:"氪", category:"nobleGas", radioactive:false, synthetic:false, atomicWeight:"83.80", density:"0.003733 g/cm³", atomicRadius:"109 pm", melting: -157, boiling: -153, halfLife:"稳定", redox:"N/A", group:"0" },
-    Rb: { k:2, l:8, m:18, n:8,  o:1,  p:null, q:null, sym:"Rb", number:37, name:"铷", category:"alkaliMetal", radioactive:false, synthetic:false, atomicWeight:"85.47", density:"1.53 g/cm³", atomicRadius:"265 pm", melting: 39, boiling: 688, halfLife:"稳定", redox:"强还原性", group:"IA" },
-    Sr: { k:2, l:8, m:18, n:8,  o:2,  p:null, q:null, sym:"Sr", number:38, name:"锶", category:"alkalineEarth", radioactive:false, synthetic:false, atomicWeight:"87.62", density:"2.64 g/cm³", atomicRadius:"219 pm", melting: 777, boiling: 1382, halfLife:"稳定", redox:"强还原性", group:"IIA" },
-    Y:  { k:2, l:8, m:18, n:9,  o:2,  p:null, q:null, sym:"Y", number:39, name:"钇", category:"transition", radioactive:false, synthetic:false, atomicWeight:"88.91", density:"4.47 g/cm³", atomicRadius:"212 pm", melting: 1472, boiling: 3349, halfLife:"稳定", redox:"还原性", group:"IIIB" },
-    Zr: { k:2, l:8, m:18, n:10, o:2,  p:null, q:null, sym:"Zr", number:40, name:"锆", category:"transition", radioactive:false, synthetic:false, atomicWeight:"91.22", density:"6.51 g/cm³", atomicRadius:"206 pm", melting: 1855, boiling: 4409, halfLife:"稳定", redox:"还原性", group:"IVB" },
-    Nb: { k:2, l:8, m:18, n:12, o:1,  p:null, q:null, sym:"Nb", number:41, name:"铌", category:"transition", radioactive:false, synthetic:false, atomicWeight:"92.91", density:"8.57 g/cm³", atomicRadius:"198 pm", melting: 2477, boiling: 4744, halfLife:"稳定", redox:"还原性", group:"VB" },
-    Mo: { k:2, l:8, m:18, n:13, o:1,  p:null, q:null, sym:"Mo", number:42, name:"钼", category:"transition", radioactive:false, synthetic:false, atomicWeight:"95.94", density:"10.28 g/cm³", atomicRadius:"190 pm", melting: 2623, boiling: 4639, halfLife:"稳定", redox:"两性", group:"VIB" },
-    Tc: { k:2, l:8, m:18, n:13, o:2,  p:null, q:null, sym:"Tc", number:43, name:"锝", category:"transition", radioactive:true, synthetic:false, atomicWeight:"[98]", density:"11.50 g/cm³", atomicRadius:"183 pm", melting: 2157, boiling: 4265, halfLife:"4.2×10⁶y", redox:"两性", group:"VIIB" },
-    Ru: { k:2, l:8, m:18, n:15, o:1,  p:null, q:null, sym:"Ru", number:44, name:"钌", category:"transition", radioactive:false, synthetic:false, atomicWeight:"101.1", density:"12.37 g/cm³", atomicRadius:"178 pm", melting: 2334, boiling: 4150, halfLife:"稳定", redox:"两性", group:"VIII" },
-    Rh: { k:2, l:8, m:18, n:16, o:1,  p:null, q:null, sym:"Rh", number:45, name:"铑", category:"transition", radioactive:false, synthetic:false, atomicWeight:"102.9", density:"12.41 g/cm³", atomicRadius:"173 pm", melting: 1964, boiling: 3695, halfLife:"稳定", redox:"还原性", group:"VIII" },
-    Pd: { k:2, l:8, m:18, n:18, o:0,  p:null, q:null, sym:"Pd", number:46, name:"钯", category:"transition", radioactive:false, synthetic:false, atomicWeight:"106.4", density:"12.02 g/cm³", atomicRadius:"169 pm", melting: 1555, boiling: 2963, halfLife:"稳定", redox:"还原性", group:"VIII" },
-    Ag: { k:2, l:8, m:18, n:18, o:1,  p:null, q:null, sym:"Ag", number:47, name:"银", category:"transition", radioactive:false, synthetic:false, atomicWeight:"107.9", density:"10.49 g/cm³", atomicRadius:"165 pm", melting: 962, boiling: 2162, halfLife:"稳定", redox:"还原性", group:"IB" },
-    Cd: { k:2, l:8, m:18, n:18, o:2,  p:null, q:null, sym:"Cd", number:48, name:"镉", category:"transition", radioactive:false, synthetic:false, atomicWeight:"112.4", density:"8.65 g/cm³", atomicRadius:"161 pm", melting: 321, boiling: 767, halfLife:"稳定", redox:"还原性", group:"IIB" },
-    In: { k:2, l:8, m:18, n:18, o:3,  p:null, q:null, sym:"In", number:49, name:"铟", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"114.8", density:"7.31 g/cm³", atomicRadius:"156 pm", melting: 157, boiling: 2072, halfLife:"稳定", redox:"两性", group:"IIIA" },
-    Sn: { k:2, l:8, m:18, n:18, o:4,  p:null, q:null, sym:"Sn", number:50, name:"锡", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"118.7", density:"7.31 g/cm³", atomicRadius:"145 pm", melting: 232, boiling: 2602, halfLife:"稳定", redox:"两性", group:"IVA" },
-    Sb: { k:2, l:8, m:18, n:18, o:5,  p:null, q:null, sym:"Sb", number:51, name:"锑", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"121.8", density:"6.69 g/cm³", atomicRadius:"133 pm", melting: 631, boiling: 1587, halfLife:"稳定", redox:"两性", group:"VA" },
-    Te: { k:2, l:8, m:18, n:18, o:6,  p:null, q:null, sym:"Te", number:52, name:"碲", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"127.6", density:"6.24 g/cm³", atomicRadius:"127 pm", melting: 450, boiling: 988, halfLife:"稳定", redox:"氧化性", group:"VIA" },
-    I:  { k:2, l:8, m:18, n:18, o:7,  p:null, q:null, sym:"I", number:53, name:"碘", category:"halogen", radioactive:false, synthetic:false, atomicWeight:"126.9", density:"4.93 g/cm³", atomicRadius:"133 pm", melting: 114, boiling: 184, halfLife:"稳定", redox:"强氧化性", group:"VIIA" },
-    Xe: { k:2, l:8, m:18, n:18, o:8,  p:null, q:null, sym:"Xe", number:54, name:"氙", category:"nobleGas", radioactive:false, synthetic:false, atomicWeight:"131.3", density:"0.005887 g/cm³", atomicRadius:"124 pm", melting: -112, boiling: -108, halfLife:"稳定", redox:"N/A", group:"0" },
-    Cs: { k:2, l:8, m:18, n:18, o:8, p:1, q:null, sym:"Cs", number:55, name:"铯", category:"alkaliMetal", radioactive:false, synthetic:false, atomicWeight:"132.9", density:"1.87 g/cm³", atomicRadius:"298 pm", melting: 28, boiling: 671, halfLife:"稳定", redox:"强还原性", group:"IA" },
-    Ba: { k:2, l:8, m:18, n:18, o:8, p:2, q:null, sym:"Ba", number:56, name:"钡", category:"alkalineEarth", radioactive:false, synthetic:false, atomicWeight:"137.3", density:"3.51 g/cm³", atomicRadius:"253 pm", melting: 727, boiling: 1897, halfLife:"稳定", redox:"强还原性", group:"IIA" },
-    La: { k:2, l:8, m:18, n:18, o:9, p:2, q:null, sym:"La", number:57, name:"镧", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"138.9", density:"6.15 g/cm³", atomicRadius:"195 pm", melting: 920, boiling: 3464, halfLife:"稳定", redox:"还原性", group:"La" },
-    Ce: { k:2, l:8, m:18, n:19, o:9, p:2, q:null, sym:"Ce", number:58, name:"铈", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"140.1", density:"6.77 g/cm³", atomicRadius:"185 pm", melting: 795, boiling: 3443, halfLife:"稳定", redox:"还原性", group:"La" },
-    Pr: { k:2, l:8, m:18, n:21, o:8, p:2, q:null, sym:"Pr", number:59, name:"镨", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"140.9", density:"6.77 g/cm³", atomicRadius:"182 pm", melting: 935, boiling: 3520, halfLife:"稳定", redox:"还原性", group:"La" },
-    Nd: { k:2, l:8, m:18, n:22, o:8, p:2, q:null, sym:"Nd", number:60, name:"钕", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"144.2", density:"7.01 g/cm³", atomicRadius:"181 pm", melting: 1024, boiling: 3074, halfLife:"稳定", redox:"还原性", group:"La" },
-    Pm: { k:2, l:8, m:18, n:23, o:8, p:2, q:null, sym:"Pm", number:61, name:"钷", category:"lanthanide", radioactive:true, synthetic:false, atomicWeight:"[145]", density:"7.26 g/cm³", atomicRadius:"180 pm", melting: 1042, boiling: 3000, halfLife:"1.77×10¹⁰y", redox:"还原性", group:"La" },
-    Sm: { k:2, l:8, m:18, n:24, o:8, p:2, q:null, sym:"Sm", number:62, name:"钐", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"150.4", density:"7.52 g/cm³", atomicRadius:"179 pm", melting: 1072, boiling: 1900, halfLife:"稳定", redox:"还原性", group:"La" },
-    Eu: { k:2, l:8, m:18, n:25, o:8, p:2, q:null, sym:"Eu", number:63, name:"铕", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"152.0", density:"5.24 g/cm³", atomicRadius:"198 pm", melting: 826, boiling: 1529, halfLife:"稳定", redox:"还原性", group:"La" },
-    Gd: { k:2, l:8, m:18, n:25, o:9, p:2, q:null, sym:"Gd", number:64, name:"钆", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"157.3", density:"7.90 g/cm³", atomicRadius:"180 pm", melting: 1313, boiling: 3273, halfLife:"稳定", redox:"还原性", group:"La" },
-    Tb: { k:2, l:8, m:18, n:27, o:8, p:2, q:null, sym:"Tb", number:65, name:"铽", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"158.9", density:"8.23 g/cm³", atomicRadius:"177 pm", melting: 1356, boiling: 3230, halfLife:"稳定", redox:"还原性", group:"La" },
-    Dy: { k:2, l:8, m:18, n:28, o:8, p:2, q:null, sym:"Dy", number:66, name:"镝", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"162.5", density:"8.55 g/cm³", atomicRadius:"175 pm", melting: 1412, boiling: 2567, halfLife:"稳定", redox:"还原性", group:"La" },
-    Ho: { k:2, l:8, m:18, n:29, o:8, p:2, q:null, sym:"Ho", number:67, name:"钬", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"164.9", density:"8.80 g/cm³", atomicRadius:"174 pm", melting: 1474, boiling: 2700, halfLife:"稳定", redox:"还原性", group:"La" },
-    Er: { k:2, l:8, m:18, n:30, o:8, p:2, q:null, sym:"Er", number:68, name:"铒", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"167.3", density:"9.07 g/cm³", atomicRadius:"173 pm", melting: 1529, boiling: 2868, halfLife:"稳定", redox:"还原性", group:"La" },
-    Tm: { k:2, l:8, m:18, n:31, o:8, p:2, q:null, sym:"Tm", number:69, name:"铥", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"168.9", density:"9.32 g/cm³", atomicRadius:"172 pm", melting: 1545, boiling: 1950, halfLife:"稳定", redox:"还原性", group:"La" },
-    Yb: { k:2, l:8, m:18, n:32, o:8, p:2, q:null, sym:"Yb", number:70, name:"镱", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"173.1", density:"6.90 g/cm³", atomicRadius:"194 pm", melting: 824, boiling: 1196, halfLife:"稳定", redox:"还原性", group:"La" },
-    Lu: { k:2, l:8, m:18, n:32, o:9, p:2, q:null, sym:"Lu", number:71, name:"镥", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"175.0", density:"9.84 g/cm³", atomicRadius:"172 pm", melting: 1652, boiling: 3402, halfLife:"稳定", redox:"还原性", group:"IIIB" },
-    Hf: { k:2, l:8, m:18, n:32, o:10, p:2, q:null, sym:"Hf", number:72, name:"铪", category:"transition", radioactive:false, synthetic:false, atomicWeight:"178.5", density:"13.31 g/cm³", atomicRadius:"175 pm", melting: 2233, boiling: 4603, halfLife:"稳定", redox:"还原性", group:"IVB" },
-    Ta: { k:2, l:8, m:18, n:32, o:11, p:2, q:null, sym:"Ta", number:73, name:"钽", category:"transition", radioactive:false, synthetic:false, atomicWeight:"181.0", density:"16.65 g/cm³", atomicRadius:"170 pm", melting: 3017, boiling: 5458, halfLife:"稳定", redox:"还原性", group:"VB" },
-    W:  { k:2, l:8, m:18, n:32, o:12, p:2, q:null, sym:"W", number:74, name:"钨", category:"transition", radioactive:false, synthetic:false, atomicWeight:"183.8", density:"19.25 g/cm³", atomicRadius:"162 pm", melting: 3422, boiling: 5555, halfLife:"稳定", redox:"两性", group:"VIB" },
-    Re: { k:2, l:8, m:18, n:32, o:13, p:2, q:null, sym:"Re", number:75, name:"铼", category:"transition", radioactive:false, synthetic:false, atomicWeight:"186.2", density:"21.02 g/cm³", atomicRadius:"157 pm", melting: 3186, boiling: 5596, halfLife:"稳定", redox:"还原性", group:"VIIB" },
-    Os: { k:2, l:8, m:18, n:32, o:14, p:2, q:null, sym:"Os", number:76, name:"锇", category:"transition", radioactive:false, synthetic:false, atomicWeight:"190.2", density:"22.59 g/cm³", atomicRadius:"156 pm", melting: 3045, boiling: 5027, halfLife:"稳定", redox:"两性", group:"VIII" },
-    Ir: { k:2, l:8, m:18, n:32, o:15, p:2, q:null, sym:"Ir", number:77, name:"铱", category:"transition", radioactive:false, synthetic:false, atomicWeight:"192.2", density:"22.56 g/cm³", atomicRadius:"153 pm", melting: 2447, boiling: 4428, halfLife:"稳定", redox:"还原性", group:"VIII" },
-    Pt: { k:2, l:8, m:18, n:32, o:17, p:1, q:null, sym:"Pt", number:78, name:"铂", category:"transition", radioactive:false, synthetic:false, atomicWeight:"195.1", density:"21.45 g/cm³", atomicRadius:"150 pm", melting: 1768, boiling: 3825, halfLife:"稳定", redox:"还原性", group:"VIII" },
-    Au: { k:2, l:8, m:18, n:32, o:18, p:1, q:null, sym:"Au", number:79, name:"金", category:"transition", radioactive:false, synthetic:false, atomicWeight:"197.0", density:"19.32 g/cm³", atomicRadius:"144 pm", melting: 1064, boiling: 2856, halfLife:"稳定", redox:"还原性", group:"IB" },
-    Hg: { k:2, l:8, m:18, n:32, o:18, p:2, q:null, sym:"Hg", number:80, name:"汞", category:"transition", radioactive:false, synthetic:false, atomicWeight:"200.6", density:"13.55 g/cm³", atomicRadius:"151 pm", melting: -39, boiling: 357, halfLife:"稳定", redox:"还原性", group:"IIB" },
-    Tl: { k:2, l:8, m:18, n:32, o:18, p:3, q:null, sym:"Tl", number:81, name:"铊", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"204.4", density:"11.85 g/cm³", atomicRadius:"156 pm", melting: 304, boiling: 1473, halfLife:"稳定", redox:"两性", group:"IIIA" },
-    Pb: { k:2, l:8, m:18, n:32, o:18, p:4, q:null, sym:"Pb", number:82, name:"铅", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"207.2", density:"11.34 g/cm³", atomicRadius:"154 pm", melting: 327, boiling: 1749, halfLife:"稳定", redox:"两性", group:"IVA" },
-    Bi: { k:2, l:8, m:18, n:32, o:18, p:5, q:null, sym:"Bi", number:83, name:"铋", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"209.0", density:"9.78 g/cm³", atomicRadius:"150 pm", melting: 271, boiling: 1560, halfLife:"1.9×10¹⁹y", redox:"两性", group:"VA" },
-    Po: { k:2, l:8, m:18, n:32, o:18, p:6, q:null, sym:"Po", number:84, name:"钋", category:"metalloid", radioactive:true, synthetic:false, atomicWeight:"[209]", density:"9.20 g/cm³", atomicRadius:"149 pm", melting: 254, boiling: 962, halfLife:"1.24×10⁷y", redox:"氧化性", group:"VIA" },
-    At: { k:2, l:8, m:18, n:32, o:18, p:7, q:null, sym:"At", number:85, name:"砹", category:"halogen", radioactive:true, synthetic:false, atomicWeight:"[210]", density:"N/A", atomicRadius:"147 pm", melting: 302, boiling: 337, halfLife:"56h", redox:"强氧化性", group:"VIIA" },
-    Rn: { k:2, l:8, m:18, n:32, o:18, p:8, q:null, sym:"Rn", number:86, name:"氡", category:"nobleGas", radioactive:true, synthetic:false, atomicWeight:"[222]", density:"0.00973 g/cm³", atomicRadius:"145 pm", melting: -71, boiling: -62, halfLife:"3.82d", redox:"N/A", group:"0" },
-    Fr: { k:2, l:8, m:18, n:32, o:18, p:8, q:1, sym:"Fr", number:87, name:"钫", category:"alkaliMetal", radioactive:true, synthetic:false, atomicWeight:"[223]", density:"N/A", atomicRadius:"N/A", melting: 27, boiling: 677, halfLife:"21.8h", redox:"强还原性", group:"IA" },
-    Ra: { k:2, l:8, m:18, n:32, o:18, p:8, q:2, sym:"Ra", number:88, name:"镭", category:"alkalineEarth", radioactive:true, synthetic:false, atomicWeight:"[226]", density:"5.00 g/cm³", atomicRadius:"215 pm", melting: 700, boiling: 1737, halfLife:"1.6×10³y", redox:"强还原性", group:"IIA" },
-    Ac: { k:2, l:8, m:18, n:32, o:18, p:9, q:2, sym:"Ac", number:89, name:"锕", category:"actinide", radioactive:true, synthetic:false, atomicWeight:"[227]", density:"10.07 g/cm³", atomicRadius:"195 pm", melting: 1051, boiling: 3198, halfLife:"21.77y", redox:"还原性", group:"Ac" },
-    Th: { k:2, l:8, m:18, n:32, o:18, p:10, q:2, sym:"Th", number:90, name:"钍", category:"actinide", radioactive:true, synthetic:false, atomicWeight:"232.0", density:"11.72 g/cm³", atomicRadius:"180 pm", melting: 1750, boiling: 4788, halfLife:"1.405×10¹⁰y", redox:"还原性", group:"Ac" },
-    Pa: { k:2, l:8, m:18, n:32, o:20, p:9, q:2, sym:"Pa", number:91, name:"镤", category:"actinide", radioactive:true, synthetic:false, atomicWeight:"[231]", density:"15.37 g/cm³", atomicRadius:"160 pm", melting: 1572, boiling: 4027, halfLife:"3.276×10⁴y", redox:"还原性", group:"Ac" },
-    U:  { k:2, l:8, m:18, n:32, o:21, p:9, q:2, sym:"U", number:92, name:"铀", category:"actinide", radioactive:true, synthetic:false, atomicWeight:"238.0", density:"19.05 g/cm³", atomicRadius:"156 pm", melting: 1132, boiling: 4131, halfLife:"4.468×10⁹y", redox:"两性", group:"Ac" },
-    Np: { k:2, l:8, m:18, n:32, o:22, p:9, q:2, sym:"Np", number:93, name:"镎", category:"actinide", radioactive:true, synthetic:false, atomicWeight:"[237]", density:"20.45 g/cm³", atomicRadius:"155 pm", melting: 637, boiling: 4175, halfLife:"2.14×10⁶y", redox:"两性", group:"Ac" },
-    Pu: { k:2, l:8, m:18, n:32, o:24, p:8, q:2, sym:"Pu", number:94, name:"钚", category:"actinide", radioactive:true, synthetic:false, atomicWeight:"[244]", density:"19.84 g/cm³", atomicRadius:"153 pm", melting: 639, boiling: 3228, halfLife:"8.08×10⁷y", redox:"两性", group:"Ac" },
-    Am: { k:2, l:8, m:18, n:32, o:25, p:8, q:2, sym:"Am", number:95, name:"镅", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[243]", density:"13.67 g/cm³", atomicRadius:"151 pm", melting: 1176, boiling: 2607, halfLife:"7.37×10³y", redox:"还原性", group:"Ac" },
-    Cm: { k:2, l:8, m:18, n:32, o:25, p:9, q:2, sym:"Cm", number:96, name:"锔", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[247]", density:"13.51 g/cm³", atomicRadius:"149 pm", melting: 1340, boiling: 3110, halfLife:"1.56×10⁷y", redox:"还原性", group:"Ac" },
-    Bk: { k:2, l:8, m:18, n:32, o:27, p:8, q:2, sym:"Bk", number:97, name:"锫", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[247]", density:"14.78 g/cm³", atomicRadius:"148 pm", melting: 986, boiling: 2627, halfLife:"1.38×10³y", redox:"还原性", group:"Ac" },
-    Cf: { k:2, l:8, m:18, n:32, o:28, p:8, q:2, sym:"Cf", number:98, name:"锎", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[251]", density:"15.10 g/cm³", atomicRadius:"146 pm", melting: 900, boiling: 1470, halfLife:"900y", redox:"还原性", group:"Ac" },
-    Es: { k:2, l:8, m:18, n:32, o:29, p:8, q:2, sym:"Es", number:99, name:"锿", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[252]", density:"N/A", atomicRadius:"145 pm", melting: 860, boiling: "/", halfLife:"472d", redox:"还原性", group:"Ac" },
-    Fm: { k:2, l:8, m:18, n:32, o:30, p:8, q:2, sym:"Fm", number:100, name:"镄", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[257]", density:"N/A", atomicRadius:"144 pm", melting: 1527, boiling: "/", halfLife:"100d", redox:"还原性", group:"Ac" },
-    Md: { k:2, l:8, m:18, n:32, o:31, p:8, q:2, sym:"Md", number:101, name:"钔", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[258]", density:"N/A", atomicRadius:"143 pm", melting: 827, boiling: "/", halfLife:"52d", redox:"还原性", group:"Ac" },
-    No: { k:2, l:8, m:18, n:32, o:32, p:8, q:2, sym:"No", number:102, name:"锘", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[259]", density:"N/A", atomicRadius:"142 pm", melting: 857, boiling: "/", halfLife:"58min", redox:"还原性", group:"Ac" },
-    Lr: { k:2, l:8, m:18, n:32, o:32, p:9, q:2, sym:"Lr", number:103, name:"铹", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[262]", density:"N/A", atomicRadius:"141 pm", melting: 1627, boiling: "/", halfLife:"11h", redox:"还原性", group:"IIIB" },
-    Rf: { k:2, l:8, m:18, n:32, o:32, p:10, q:2, sym:"Rf", number:104, name:"𬬻", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[267]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"1.3s", redox:"N/A", group:"IVB" },
-    Db: { k:2, l:8, m:18, n:32, o:32, p:11, q:2, sym:"Db", number:105, name:"𬭊", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[268]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"26s", redox:"N/A", group:"VB" },
-    Sg: { k:2, l:8, m:18, n:32, o:32, p:12, q:2, sym:"Sg", number:106, name:"𬭳", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[269]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"0.21s", redox:"N/A", group:"VIB" },
-    Bh: { k:2, l:8, m:18, n:32, o:32, p:13, q:2, sym:"Bh", number:107, name:"𬭛", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[270]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"61ms", redox:"N/A", group:"VIIB" },
-    Hs: { k:2, l:8, m:18, n:32, o:32, p:14, q:2, sym:"Hs", number:108, name:"𬭶", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[277]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"15ms", redox:"N/A", group:"VIII" },
-    Mt: { k:2, l:8, m:18, n:32, o:32, p:15, q:2, sym:"Mt", number:109, name:"鿏", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[278]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"0.49ms", redox:"N/A", group:"VIII" },
-    Ds: { k:2, l:8, m:18, n:32, o:32, p:16, q:2, sym:"Ds", number:110, name:"𫟼", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[281]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"27μs", redox:"N/A", group:"VIII" },
-    Rg: { k:2, l:8, m:18, n:32, o:32, p:17, q:2, sym:"Rg", number:111, name:"𬬭", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[282]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"0.55ms", redox:"N/A", group:"IB" },
-    Cn: { k:2, l:8, m:18, n:32, o:32, p:18, q:2, sym:"Cn", number:112, name:"鿔", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[285]", density:"N/A", atomicRadius:"N/A", melting: 343, boiling: "/", halfLife:"34ms", redox:"N/A", group:"IIB" },
-    Nh: { k:2, l:8, m:18, n:32, o:32, p:18, q:3, sym:"Nh", number:113, name:"鿭", category:"commonMetal", radioactive:true, synthetic:true, atomicWeight:"[286]", density:"N/A", atomicRadius:"N/A", melting: 427, boiling: "/", halfLife:"0.32ms", redox:"N/A", group:"IIIA" },
-    Fl: { k:2, l:8, m:18, n:32, o:32, p:18, q:4, sym:"Fl", number:114, name:"𫓧", category:"commonMetal", radioactive:true, synthetic:true, atomicWeight:"[289]", density:"N/A", atomicRadius:"N/A", melting: 627, boiling: "/", halfLife:"6.1ms", redox:"N/A", group:"IVA" },
-    Mc: { k:2, l:8, m:18, n:32, o:32, p:18, q:5, sym:"Mc", number:115, name:"镆", category:"commonMetal", radioactive:true, synthetic:true, atomicWeight:"[290]", density:"N/A", atomicRadius:"N/A", melting: 400, boiling: "/", halfLife:"0.22ms", redox:"N/A", group:"VA" },
-    Lv: { k:2, l:8, m:18, n:32, o:32, p:18, q:6, sym:"Lv", number:116, name:"𫟷", category:"commonMetal", radioactive:true, synthetic:true, atomicWeight:"[293]", density:"N/A", atomicRadius:"N/A", melting: 640, boiling: "/", halfLife:"1.9ms", redox:"N/A", group:"VIA" },
-    Ts: { k:2, l:8, m:18, n:32, o:32, p:18, q:7, sym:"Ts", number:117, name:"鿬", category:"halogen", radioactive:true, synthetic:true, atomicWeight:"[294]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"0.16ms", redox:"N/A", group:"VIIA" },
-    Og: { k:2, l:8, m:18, n:32, o:32, p:18, q:8, sym:"Og", number:118, name:"鿫", category:"nobleGas", radioactive:true, synthetic:true, atomicWeight:"[294]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"22μs", redox:"N/A", group:"0" }
+    H:  { k:1, l:null, m:null, n:null, o:null, p:null, q:null, sym:"H", number:1, name:"氢", category:"hydrogen", radioactive:false, synthetic:false, atomicWeight:"1.008", density:"0.0000899 g/cm³", atomicRadius:"53 pm", melting: -259, boiling: -253, halfLife:"稳定", redox:"强还原性", group:"IA", electronConfig: { '1s': 1 } },
+    He: { k:2, l:null, m:null, n:null, o:null, p:null, q:null, sym:"He", number:2, name:"氦", category:"nobleGas", radioactive:false, synthetic:false, atomicWeight:"4.003", density:"0.0001785 g/cm³", atomicRadius:"31 pm", melting: -272, boiling: -269, halfLife:"稳定", redox:"N/A", group:"0", electronConfig: { '1s': 2 } },
+    Li: { k:2, l:1, m:null, n:null, o:null, p:null, q:null, sym:"Li", number:3, name:"锂", category:"alkaliMetal", radioactive:false, synthetic:false, atomicWeight:"6.941", density:"0.534 g/cm³", atomicRadius:"167 pm", melting: 181, boiling: 1342, halfLife:"稳定", redox:"强还原性", group:"IA", electronConfig: { '1s': 2, '2s': 1 } },
+    Be: { k:2, l:2, m:null, n:null, o:null, p:null, q:null, sym:"Be", number:4, name:"铍", category:"alkalineEarth", radioactive:false, synthetic:false, atomicWeight:"9.012", density:"1.85 g/cm³", atomicRadius:"112 pm", melting: 1287, boiling: 2471, halfLife:"稳定", redox:"还原性", group:"IIA", electronConfig: { '1s': 2, '2s': 2 } },
+    B:  { k:2, l:3, m:null, n:null, o:null, p:null, q:null, sym:"B", number:5, name:"硼", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"10.81", density:"2.34 g/cm³", atomicRadius:"87 pm", melting: 2076, boiling: 3927, halfLife:"稳定", redox:"两性", group:"IIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 1 } },
+    C:  { k:2, l:4, m:null, n:null, o:null, p:null, q:null, sym:"C", number:6, name:"碳", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"12.01", density:"2.26 g/cm³", atomicRadius:"67 pm", melting: 3550, boiling: 4027, halfLife:"稳定", redox:"两性", group:"IVA", electronConfig: { '1s': 2, '2s': 2, '2p': 2 } },
+    N:  { k:2, l:5, m:null, n:null, o:null, p:null, q:null, sym:"N", number:7, name:"氮", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"14.01", density:"0.001251 g/cm³", atomicRadius:"56 pm", melting: -210, boiling: -196, halfLife:"稳定", redox:"氧化性", group:"VA", electronConfig: { '1s': 2, '2s': 2, '2p': 3 } },
+    O:  { k:2, l:6, m:null, n:null, o:null, p:null, q:null, sym:"O", number:8, name:"氧", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"16.00", density:"0.001429 g/cm³", atomicRadius:"48 pm", melting: -219, boiling: -183, halfLife:"稳定", redox:"强氧化性", group:"VIA", electronConfig: { '1s': 2, '2s': 2, '2p': 4 } },
+    F:  { k:2, l:7, m:null, n:null, o:null, p:null, q:null, sym:"F", number:9, name:"氟", category:"halogen", radioactive:false, synthetic:false, atomicWeight:"19.00", density:"0.001696 g/cm³", atomicRadius:"42 pm", melting: -220, boiling: -188, halfLife:"稳定", redox:"强氧化性", group:"VIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 5 } },
+    Ne: { k:2, l:8, m:null, n:null, o:null, p:null, q:null, sym:"Ne", number:10, name:"氖", category:"nobleGas", radioactive:false, synthetic:false, atomicWeight:"20.18", density:"0.000900 g/cm³", atomicRadius:"38 pm", melting: -249, boiling: -246, halfLife:"稳定", redox:"N/A", group:"0", electronConfig: { '1s': 2, '2s': 2, '2p': 6 } },
+    Na: { k:2, l:8, m:1, n:null, o:null, p:null, q:null, sym:"Na", number:11, name:"钠", category:"alkaliMetal", radioactive:false, synthetic:false, atomicWeight:"22.99", density:"0.971 g/cm³", atomicRadius:"190 pm", melting: 98, boiling: 883, halfLife:"稳定", redox:"强还原性", group:"IA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 1 } },
+    Mg: { k:2, l:8, m:2, n:null, o:null, p:null, q:null, sym:"Mg", number:12, name:"镁", category:"alkalineEarth", radioactive:false, synthetic:false, atomicWeight:"24.31", density:"1.74 g/cm³", atomicRadius:"145 pm", melting: 650, boiling: 1090, halfLife:"稳定", redox:"强还原性", group:"IIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2 } },
+    Al: { k:2, l:8, m:3, n:null, o:null, p:null, q:null, sym:"Al", number:13, name:"铝", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"26.98", density:"2.70 g/cm³", atomicRadius:"118 pm", melting: 660, boiling: 2519, halfLife:"稳定", redox:"两性", group:"IIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 1 } },
+    Si: { k:2, l:8, m:4, n:null, o:null, p:null, q:null, sym:"Si", number:14, name:"硅", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"28.09", density:"2.33 g/cm³", atomicRadius:"111 pm", melting: 1414, boiling: 3265, halfLife:"稳定", redox:"两性", group:"IVA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 2 } },
+    P:  { k:2, l:8, m:5, n:null, o:null, p:null, q:null, sym:"P", number:15, name:"磷", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"30.97", density:"1.82 g/cm³", atomicRadius:"98 pm", melting: 44, boiling: 281, halfLife:"稳定", redox:"氧化性", group:"VA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 3 } },
+    S:  { k:2, l:8, m:6, n:null, o:null, p:null, q:null, sym:"S", number:16, name:"硫", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"32.07", density:"2.07 g/cm³", atomicRadius:"88 pm", melting: 115, boiling: 445, halfLife:"稳定", redox:"氧化性", group:"VIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 4 } },
+    Cl: { k:2, l:8, m:7, n:null, o:null, p:null, q:null, sym:"Cl", number:17, name:"氯", category:"halogen", radioactive:false, synthetic:false, atomicWeight:"35.45", density:"0.003214 g/cm³", atomicRadius:"79 pm", melting: -102, boiling: -34, halfLife:"稳定", redox:"强氧化性", group:"VIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 5 } },
+    Ar: { k:2, l:8, m:8, n:null, o:null, p:null, q:null, sym:"Ar", number:18, name:"氩", category:"nobleGas", radioactive:false, synthetic:false, atomicWeight:"39.95", density:"0.001784 g/cm³", atomicRadius:"71 pm", melting: -189, boiling: -186, halfLife:"稳定", redox:"N/A", group:"0", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6 } },
+    K:  { k:2, l:8, m:8, n:1, o:null, p:null, q:null, sym:"K", number:19, name:"钾", category:"alkaliMetal", radioactive:false, synthetic:false, atomicWeight:"39.10", density:"0.862 g/cm³", atomicRadius:"243 pm", melting: 64, boiling: 759, halfLife:"稳定", redox:"强还原性", group:"IA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '4s': 1 } },
+    Ca: { k:2, l:8, m:8, n:2, o:null, p:null, q:null, sym:"Ca", number:20, name:"钙", category:"alkalineEarth", radioactive:false, synthetic:false, atomicWeight:"40.08", density:"1.55 g/cm³", atomicRadius:"194 pm", melting: 842, boiling: 1484, halfLife:"稳定", redox:"强还原性", group:"IIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '4s': 2 } },
+    Sc: { k:2, l:8, m:9,  n:2,  o:null, p:null, q:null, sym:"Sc", number:21, name:"钪", category:"transition", radioactive:false, synthetic:false, atomicWeight:"44.96", density:"2.99 g/cm³", atomicRadius:"184 pm", melting: 1541, boiling: 2836, halfLife:"稳定", redox:"还原性", group:"IIIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 1, '4s': 2 } },
+    Ti: { k:2, l:8, m:10, n:2,  o:null, p:null, q:null, sym:"Ti", number:22, name:"钛", category:"transition", radioactive:false, synthetic:false, atomicWeight:"47.87", density:"4.51 g/cm³", atomicRadius:"176 pm", melting: 1668, boiling: 3287, halfLife:"稳定", redox:"还原性", group:"IVB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 2, '4s': 2 } },
+    V:  { k:2, l:8, m:11, n:2,  o:null, p:null, q:null, sym:"V", number:23, name:"钒", category:"transition", radioactive:false, synthetic:false, atomicWeight:"50.94", density:"6.11 g/cm³", atomicRadius:"171 pm", melting: 1910, boiling: 3407, halfLife:"稳定", redox:"还原性", group:"VB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 3, '4s': 2 } },
+    Cr: { k:2, l:8, m:13, n:1,  o:null, p:null, q:null, sym:"Cr", number:24, name:"铬", category:"transition", radioactive:false, synthetic:false, atomicWeight:"52.00", density:"7.19 g/cm³", atomicRadius:"166 pm", melting: 1907, boiling: 2671, halfLife:"稳定", redox:"两性", group:"VIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 5, '4s': 1 } },
+    Mn: { k:2, l:8, m:13, n:2,  o:null, p:null, q:null, sym:"Mn", number:25, name:"锰", category:"transition", radioactive:false, synthetic:false, atomicWeight:"54.94", density:"7.43 g/cm³", atomicRadius:"161 pm", melting: 1246, boiling: 2061, halfLife:"稳定", redox:"两性", group:"VIIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 5, '4s': 2 } },
+    Fe: { k:2, l:8, m:14, n:2,  o:null, p:null, q:null, sym:"Fe", number:26, name:"铁", category:"transition", radioactive:false, synthetic:false, atomicWeight:"55.85", density:"7.87 g/cm³", atomicRadius:"156 pm", melting: 1538, boiling: 2861, halfLife:"稳定", redox:"两性", group:"VIII", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 6, '4s': 2 } },
+    Co: { k:2, l:8, m:15, n:2,  o:null, p:null, q:null, sym:"Co", number:27, name:"钴", category:"transition", radioactive:false, synthetic:false, atomicWeight:"58.93", density:"8.90 g/cm³", atomicRadius:"152 pm", melting: 1495, boiling: 2927, halfLife:"稳定", redox:"还原性", group:"VIII", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 7, '4s': 2 } },
+    Ni: { k:2, l:8, m:16, n:2,  o:null, p:null, q:null, sym:"Ni", number:28, name:"镍", category:"transition", radioactive:false, synthetic:false, atomicWeight:"58.69", density:"8.91 g/cm³", atomicRadius:"149 pm", melting: 1455, boiling: 2913, halfLife:"稳定", redox:"还原性", group:"VIII", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 8, '4s': 2 } },
+    Cu: { k:2, l:8, m:18, n:1,  o:null, p:null, q:null, sym:"Cu", number:29, name:"铜", category:"transition", radioactive:false, synthetic:false, atomicWeight:"63.55", density:"8.96 g/cm³", atomicRadius:"145 pm", melting: 1085, boiling: 2562, halfLife:"稳定", redox:"两性", group:"IB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 1 } },
+    Zn: { k:2, l:8, m:18, n:2,  o:null, p:null, q:null, sym:"Zn", number:30, name:"锌", category:"transition", radioactive:false, synthetic:false, atomicWeight:"65.38", density:"7.14 g/cm³", atomicRadius:"142 pm", melting: 420, boiling: 907, halfLife:"稳定", redox:"还原性", group:"IIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2 } },
+    Ga: { k:2, l:8, m:18, n:3,  o:null, p:null, q:null, sym:"Ga", number:31, name:"镓", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"69.72", density:"5.91 g/cm³", atomicRadius:"136 pm", melting: 30, boiling: 2204, halfLife:"稳定", redox:"两性", group:"IIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 1 } },
+    Ge: { k:2, l:8, m:18, n:4,  o:null, p:null, q:null, sym:"Ge", number:32, name:"锗", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"72.64", density:"5.32 g/cm³", atomicRadius:"123 pm", melting: 938, boiling: 2833, halfLife:"稳定", redox:"两性", group:"IVA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 2 } },
+    As: { k:2, l:8, m:18, n:5,  o:null, p:null, q:null, sym:"As", number:33, name:"砷", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"74.92", density:"5.73 g/cm³", atomicRadius:"119 pm", melting: null, boiling: 615, halfLife:"稳定", redox:"两性", group:"VA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 3 } },
+    Se: { k:2, l:8, m:18, n:6,  o:null, p:null, q:null, sym:"Se", number:34, name:"硒", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"78.96", density:"4.81 g/cm³", atomicRadius:"116 pm", melting: 221, boiling: 685, halfLife:"稳定", redox:"氧化性", group:"VIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 4 } },
+    Br: { k:2, l:8, m:18, n:7,  o:null, p:null, q:null, sym:"Br", number:35, name:"溴", category:"halogen", radioactive:false, synthetic:false, atomicWeight:"79.90", density:"3.12 g/cm³", atomicRadius:"114 pm", melting: -7, boiling: 59, halfLife:"稳定", redox:"强氧化性", group:"VIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 5 } },
+    Kr: { k:2, l:8, m:18, n:8,  o:null, p:null, q:null, sym:"Kr", number:36, name:"氪", category:"nobleGas", radioactive:false, synthetic:false, atomicWeight:"83.80", density:"0.003733 g/cm³", atomicRadius:"109 pm", melting: -157, boiling: -153, halfLife:"稳定", redox:"N/A", group:"0", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6 } },
+    Rb: { k:2, l:8, m:18, n:8,  o:1,  p:null, q:null, sym:"Rb", number:37, name:"铷", category:"alkaliMetal", radioactive:false, synthetic:false, atomicWeight:"85.47", density:"1.53 g/cm³", atomicRadius:"265 pm", melting: 39, boiling: 688, halfLife:"稳定", redox:"强还原性", group:"IA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '5s': 1 } },
+    Sr: { k:2, l:8, m:18, n:8,  o:2,  p:null, q:null, sym:"Sr", number:38, name:"锶", category:"alkalineEarth", radioactive:false, synthetic:false, atomicWeight:"87.62", density:"2.64 g/cm³", atomicRadius:"219 pm", melting: 777, boiling: 1382, halfLife:"稳定", redox:"强还原性", group:"IIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '5s': 2 } },
+    Y:  { k:2, l:8, m:18, n:9,  o:2,  p:null, q:null, sym:"Y", number:39, name:"钇", category:"transition", radioactive:false, synthetic:false, atomicWeight:"88.91", density:"4.47 g/cm³", atomicRadius:"212 pm", melting: 1472, boiling: 3349, halfLife:"稳定", redox:"还原性", group:"IIIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 1, '5s': 2 } },
+    Zr: { k:2, l:8, m:18, n:10, o:2,  p:null, q:null, sym:"Zr", number:40, name:"锆", category:"transition", radioactive:false, synthetic:false, atomicWeight:"91.22", density:"6.51 g/cm³", atomicRadius:"206 pm", melting: 1855, boiling: 4409, halfLife:"稳定", redox:"还原性", group:"IVB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 2, '5s': 2 } },
+    Nb: { k:2, l:8, m:18, n:12, o:1,  p:null, q:null, sym:"Nb", number:41, name:"铌", category:"transition", radioactive:false, synthetic:false, atomicWeight:"92.91", density:"8.57 g/cm³", atomicRadius:"198 pm", melting: 2477, boiling: 4744, halfLife:"稳定", redox:"还原性", group:"VB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 4, '5s': 1 } },
+    Mo: { k:2, l:8, m:18, n:13, o:1,  p:null, q:null, sym:"Mo", number:42, name:"钼", category:"transition", radioactive:false, synthetic:false, atomicWeight:"95.94", density:"10.28 g/cm³", atomicRadius:"190 pm", melting: 2623, boiling: 4639, halfLife:"稳定", redox:"两性", group:"VIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 5, '5s': 1 } },
+    Tc: { k:2, l:8, m:18, n:13, o:2,  p:null, q:null, sym:"Tc", number:43, name:"锝", category:"transition", radioactive:true, synthetic:false, atomicWeight:"[98]", density:"11.50 g/cm³", atomicRadius:"183 pm", melting: 2157, boiling: 4265, halfLife:"4.2×10⁶y", redox:"两性", group:"VIIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 5, '5s': 2 } },
+    Ru: { k:2, l:8, m:18, n:15, o:1,  p:null, q:null, sym:"Ru", number:44, name:"钌", category:"transition", radioactive:false, synthetic:false, atomicWeight:"101.1", density:"12.37 g/cm³", atomicRadius:"178 pm", melting: 2334, boiling: 4150, halfLife:"稳定", redox:"两性", group:"VIII", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 7, '5s': 1 } },
+    Rh: { k:2, l:8, m:18, n:16, o:1,  p:null, q:null, sym:"Rh", number:45, name:"铑", category:"transition", radioactive:false, synthetic:false, atomicWeight:"102.9", density:"12.41 g/cm³", atomicRadius:"173 pm", melting: 1964, boiling: 3695, halfLife:"稳定", redox:"还原性", group:"VIII", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 8, '5s': 1 } },
+    Pd: { k:2, l:8, m:18, n:18, o:0,  p:null, q:null, sym:"Pd", number:46, name:"钯", category:"transition", radioactive:false, synthetic:false, atomicWeight:"106.4", density:"12.02 g/cm³", atomicRadius:"169 pm", melting: 1555, boiling: 2963, halfLife:"稳定", redox:"还原性", group:"VIII", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10 } },
+    Ag: { k:2, l:8, m:18, n:18, o:1,  p:null, q:null, sym:"Ag", number:47, name:"银", category:"transition", radioactive:false, synthetic:false, atomicWeight:"107.9", density:"10.49 g/cm³", atomicRadius:"165 pm", melting: 962, boiling: 2162, halfLife:"稳定", redox:"还原性", group:"IB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '5s': 1 } },
+    Cd: { k:2, l:8, m:18, n:18, o:2,  p:null, q:null, sym:"Cd", number:48, name:"镉", category:"transition", radioactive:false, synthetic:false, atomicWeight:"112.4", density:"8.65 g/cm³", atomicRadius:"161 pm", melting: 321, boiling: 767, halfLife:"稳定", redox:"还原性", group:"IIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '5s': 2 } },
+    In: { k:2, l:8, m:18, n:18, o:3,  p:null, q:null, sym:"In", number:49, name:"铟", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"114.8", density:"7.31 g/cm³", atomicRadius:"156 pm", melting: 157, boiling: 2072, halfLife:"稳定", redox:"两性", group:"IIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '5s': 2, '5p': 1 } },
+    Sn: { k:2, l:8, m:18, n:18, o:4,  p:null, q:null, sym:"Sn", number:50, name:"锡", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"118.7", density:"7.31 g/cm³", atomicRadius:"145 pm", melting: 232, boiling: 2602, halfLife:"稳定", redox:"两性", group:"IVA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '5s': 2, '5p': 2 } },
+    Sb: { k:2, l:8, m:18, n:18, o:5,  p:null, q:null, sym:"Sb", number:51, name:"锑", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"121.8", density:"6.69 g/cm³", atomicRadius:"133 pm", melting: 631, boiling: 1587, halfLife:"稳定", redox:"两性", group:"VA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '5s': 2, '5p': 3 } },
+    Te: { k:2, l:8, m:18, n:18, o:6,  p:null, q:null, sym:"Te", number:52, name:"碲", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"127.6", density:"6.24 g/cm³", atomicRadius:"127 pm", melting: 450, boiling: 988, halfLife:"稳定", redox:"氧化性", group:"VIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '5s': 2, '5p': 4 } },
+    I:  { k:2, l:8, m:18, n:18, o:7,  p:null, q:null, sym:"I", number:53, name:"碘", category:"halogen", radioactive:false, synthetic:false, atomicWeight:"126.9", density:"4.93 g/cm³", atomicRadius:"133 pm", melting: 114, boiling: 184, halfLife:"稳定", redox:"强氧化性", group:"VIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '5s': 2, '5p': 5 } },
+    Xe: { k:2, l:8, m:18, n:18, o:8,  p:null, q:null, sym:"Xe", number:54, name:"氙", category:"nobleGas", radioactive:false, synthetic:false, atomicWeight:"131.3", density:"0.005887 g/cm³", atomicRadius:"124 pm", melting: -112, boiling: -108, halfLife:"稳定", redox:"N/A", group:"0", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '5s': 2, '5p': 6 } },
+    Cs: { k:2, l:8, m:18, n:18, o:8, p:1, q:null, sym:"Cs", number:55, name:"铯", category:"alkaliMetal", radioactive:false, synthetic:false, atomicWeight:"132.9", density:"1.87 g/cm³", atomicRadius:"298 pm", melting: 28, boiling: 671, halfLife:"稳定", redox:"强还原性", group:"IA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '5s': 2, '5p': 6, '6s': 1 } },
+    Ba: { k:2, l:8, m:18, n:18, o:8, p:2, q:null, sym:"Ba", number:56, name:"钡", category:"alkalineEarth", radioactive:false, synthetic:false, atomicWeight:"137.3", density:"3.51 g/cm³", atomicRadius:"253 pm", melting: 727, boiling: 1897, halfLife:"稳定", redox:"强还原性", group:"IIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '5s': 2, '5p': 6, '6s': 2 } },
+    La: { k:2, l:8, m:18, n:18, o:9, p:2, q:null, sym:"La", number:57, name:"镧", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"138.9", density:"6.15 g/cm³", atomicRadius:"195 pm", melting: 920, boiling: 3464, halfLife:"稳定", redox:"还原性", group:"La", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '5s': 2, '5p': 6, '5d': 1, '6s': 2 } },
+    Ce: { k:2, l:8, m:18, n:19, o:9, p:2, q:null, sym:"Ce", number:58, name:"铈", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"140.1", density:"6.77 g/cm³", atomicRadius:"185 pm", melting: 795, boiling: 3443, halfLife:"稳定", redox:"还原性", group:"La", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 1, '5s': 2, '5p': 6, '5d': 1, '6s': 2 } },
+    Pr: { k:2, l:8, m:18, n:21, o:8, p:2, q:null, sym:"Pr", number:59, name:"镨", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"140.9", density:"6.77 g/cm³", atomicRadius:"182 pm", melting: 935, boiling: 3520, halfLife:"稳定", redox:"还原性", group:"La", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 3, '5s': 2, '5p': 6, '6s': 2 } },
+    Nd: { k:2, l:8, m:18, n:22, o:8, p:2, q:null, sym:"Nd", number:60, name:"钕", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"144.2", density:"7.01 g/cm³", atomicRadius:"181 pm", melting: 1024, boiling: 3074, halfLife:"稳定", redox:"还原性", group:"La", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 4, '5s': 2, '5p': 6, '6s': 2 } },
+    Pm: { k:2, l:8, m:18, n:23, o:8, p:2, q:null, sym:"Pm", number:61, name:"钷", category:"lanthanide", radioactive:true, synthetic:false, atomicWeight:"[145]", density:"7.26 g/cm³", atomicRadius:"180 pm", melting: 1042, boiling: 3000, halfLife:"1.77×10¹⁰y", redox:"还原性", group:"La", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 5, '5s': 2, '5p': 6, '6s': 2 } },
+    Sm: { k:2, l:8, m:18, n:24, o:8, p:2, q:null, sym:"Sm", number:62, name:"钐", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"150.4", density:"7.52 g/cm³", atomicRadius:"179 pm", melting: 1072, boiling: 1900, halfLife:"稳定", redox:"还原性", group:"La", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 6, '5s': 2, '5p': 6, '6s': 2 } },
+    Eu: { k:2, l:8, m:18, n:25, o:8, p:2, q:null, sym:"Eu", number:63, name:"铕", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"152.0", density:"5.24 g/cm³", atomicRadius:"198 pm", melting: 826, boiling: 1529, halfLife:"稳定", redox:"还原性", group:"La", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 7, '5s': 2, '5p': 6, '6s': 2 } },
+    Gd: { k:2, l:8, m:18, n:25, o:9, p:2, q:null, sym:"Gd", number:64, name:"钆", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"157.3", density:"7.90 g/cm³", atomicRadius:"180 pm", melting: 1313, boiling: 3273, halfLife:"稳定", redox:"还原性", group:"La", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 7, '5s': 2, '5p': 6, '5d': 1, '6s': 2 } },
+    Tb: { k:2, l:8, m:18, n:27, o:8, p:2, q:null, sym:"Tb", number:65, name:"铽", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"158.9", density:"8.23 g/cm³", atomicRadius:"177 pm", melting: 1356, boiling: 3230, halfLife:"稳定", redox:"还原性", group:"La", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 9, '5s': 2, '5p': 6, '6s': 2 } },
+    Dy: { k:2, l:8, m:18, n:28, o:8, p:2, q:null, sym:"Dy", number:66, name:"镝", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"162.5", density:"8.55 g/cm³", atomicRadius:"175 pm", melting: 1412, boiling: 2567, halfLife:"稳定", redox:"还原性", group:"La", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 10, '5s': 2, '5p': 6, '6s': 2 } },
+    Ho: { k:2, l:8, m:18, n:29, o:8, p:2, q:null, sym:"Ho", number:67, name:"钬", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"164.9", density:"8.80 g/cm³", atomicRadius:"174 pm", melting: 1474, boiling: 2700, halfLife:"稳定", redox:"还原性", group:"La", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 11, '5s': 2, '5p': 6, '6s': 2 } },
+    Er: { k:2, l:8, m:18, n:30, o:8, p:2, q:null, sym:"Er", number:68, name:"铒", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"167.3", density:"9.07 g/cm³", atomicRadius:"173 pm", melting: 1529, boiling: 2868, halfLife:"稳定", redox:"还原性", group:"La", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 12, '5s': 2, '5p': 6, '6s': 2 } },
+    Tm: { k:2, l:8, m:18, n:31, o:8, p:2, q:null, sym:"Tm", number:69, name:"铥", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"168.9", density:"9.32 g/cm³", atomicRadius:"172 pm", melting: 1545, boiling: 1950, halfLife:"稳定", redox:"还原性", group:"La", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 13, '5s': 2, '5p': 6, '6s': 2 } },
+    Yb: { k:2, l:8, m:18, n:32, o:8, p:2, q:null, sym:"Yb", number:70, name:"镱", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"173.1", density:"6.90 g/cm³", atomicRadius:"194 pm", melting: 824, boiling: 1196, halfLife:"稳定", redox:"还原性", group:"La", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '6s': 2 } },
+    Lu: { k:2, l:8, m:18, n:32, o:9, p:2, q:null, sym:"Lu", number:71, name:"镥", category:"lanthanide", radioactive:false, synthetic:false, atomicWeight:"175.0", density:"9.84 g/cm³", atomicRadius:"172 pm", melting: 1652, boiling: 3402, halfLife:"稳定", redox:"还原性", group:"IIIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 1, '6s': 2 } },
+    Hf: { k:2, l:8, m:18, n:32, o:10, p:2, q:null, sym:"Hf", number:72, name:"铪", category:"transition", radioactive:false, synthetic:false, atomicWeight:"178.5", density:"13.31 g/cm³", atomicRadius:"175 pm", melting: 2233, boiling: 4603, halfLife:"稳定", redox:"还原性", group:"IVB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 2, '6s': 2 } },
+    Ta: { k:2, l:8, m:18, n:32, o:11, p:2, q:null, sym:"Ta", number:73, name:"钽", category:"transition", radioactive:false, synthetic:false, atomicWeight:"181.0", density:"16.65 g/cm³", atomicRadius:"170 pm", melting: 3017, boiling: 5458, halfLife:"稳定", redox:"还原性", group:"VB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 3, '6s': 2 } },
+    W:  { k:2, l:8, m:18, n:32, o:12, p:2, q:null, sym:"W", number:74, name:"钨", category:"transition", radioactive:false, synthetic:false, atomicWeight:"183.8", density:"19.25 g/cm³", atomicRadius:"162 pm", melting: 3422, boiling: 5555, halfLife:"稳定", redox:"两性", group:"VIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 4, '6s': 2 } },
+    Re: { k:2, l:8, m:18, n:32, o:13, p:2, q:null, sym:"Re", number:75, name:"铼", category:"transition", radioactive:false, synthetic:false, atomicWeight:"186.2", density:"21.02 g/cm³", atomicRadius:"157 pm", melting: 3186, boiling: 5596, halfLife:"稳定", redox:"还原性", group:"VIIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 5, '6s': 2 } },
+    Os: { k:2, l:8, m:18, n:32, o:14, p:2, q:null, sym:"Os", number:76, name:"锇", category:"transition", radioactive:false, synthetic:false, atomicWeight:"190.2", density:"22.59 g/cm³", atomicRadius:"156 pm", melting: 3045, boiling: 5027, halfLife:"稳定", redox:"两性", group:"VIII", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 6, '6s': 2 } },
+    Ir: { k:2, l:8, m:18, n:32, o:15, p:2, q:null, sym:"Ir", number:77, name:"铱", category:"transition", radioactive:false, synthetic:false, atomicWeight:"192.2", density:"22.56 g/cm³", atomicRadius:"153 pm", melting: 2447, boiling: 4428, halfLife:"稳定", redox:"还原性", group:"VIII", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 7, '6s': 2 } },
+    Pt: { k:2, l:8, m:18, n:32, o:17, p:1, q:null, sym:"Pt", number:78, name:"铂", category:"transition", radioactive:false, synthetic:false, atomicWeight:"195.1", density:"21.45 g/cm³", atomicRadius:"150 pm", melting: 1768, boiling: 3825, halfLife:"稳定", redox:"还原性", group:"VIII", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 9, '6s': 1 } },
+    Au: { k:2, l:8, m:18, n:32, o:18, p:1, q:null, sym:"Au", number:79, name:"金", category:"transition", radioactive:false, synthetic:false, atomicWeight:"197.0", density:"19.32 g/cm³", atomicRadius:"144 pm", melting: 1064, boiling: 2856, halfLife:"稳定", redox:"还原性", group:"IB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '6s': 1 } },
+    Hg: { k:2, l:8, m:18, n:32, o:18, p:2, q:null, sym:"Hg", number:80, name:"汞", category:"transition", radioactive:false, synthetic:false, atomicWeight:"200.6", density:"13.55 g/cm³", atomicRadius:"151 pm", melting: -39, boiling: 357, halfLife:"稳定", redox:"还原性", group:"IIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '6s': 2 } },
+    Tl: { k:2, l:8, m:18, n:32, o:18, p:3, q:null, sym:"Tl", number:81, name:"铊", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"204.4", density:"11.85 g/cm³", atomicRadius:"156 pm", melting: 304, boiling: 1473, halfLife:"稳定", redox:"两性", group:"IIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '6s': 2, '6p': 1 } },
+    Pb: { k:2, l:8, m:18, n:32, o:18, p:4, q:null, sym:"Pb", number:82, name:"铅", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"207.2", density:"11.34 g/cm³", atomicRadius:"154 pm", melting: 327, boiling: 1749, halfLife:"稳定", redox:"两性", group:"IVA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '6s': 2, '6p': 2 } },
+    Bi: { k:2, l:8, m:18, n:32, o:18, p:5, q:null, sym:"Bi", number:83, name:"铋", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"209.0", density:"9.78 g/cm³", atomicRadius:"150 pm", melting: 271, boiling: 1560, halfLife:"1.9×10¹⁹y", redox:"两性", group:"VA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '6s': 2, '6p': 3 } },
+    Po: { k:2, l:8, m:18, n:32, o:18, p:6, q:null, sym:"Po", number:84, name:"钋", category:"metalloid", radioactive:true, synthetic:false, atomicWeight:"[209]", density:"9.20 g/cm³", atomicRadius:"149 pm", melting: 254, boiling: 962, halfLife:"1.24×10⁷y", redox:"氧化性", group:"VIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '6s': 2, '6p': 4 } },
+    At: { k:2, l:8, m:18, n:32, o:18, p:7, q:null, sym:"At", number:85, name:"砹", category:"halogen", radioactive:true, synthetic:false, atomicWeight:"[210]", density:"N/A", atomicRadius:"147 pm", melting: 302, boiling: 337, halfLife:"56h", redox:"强氧化性", group:"VIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '6s': 2, '6p': 5 } },
+    Rn: { k:2, l:8, m:18, n:32, o:18, p:8, q:null, sym:"Rn", number:86, name:"氡", category:"nobleGas", radioactive:true, synthetic:false, atomicWeight:"[222]", density:"0.00973 g/cm³", atomicRadius:"145 pm", melting: -71, boiling: -62, halfLife:"3.82d", redox:"N/A", group:"0", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '6s': 2, '6p': 6 } },
+    Fr: { k:2, l:8, m:18, n:32, o:18, p:8, q:1, sym:"Fr", number:87, name:"钫", category:"alkaliMetal", radioactive:true, synthetic:false, atomicWeight:"[223]", density:"N/A", atomicRadius:"N/A", melting: 27, boiling: 677, halfLife:"21.8h", redox:"强还原性", group:"IA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '6s': 2, '6p': 6, '7s': 1 } },
+    Ra: { k:2, l:8, m:18, n:32, o:18, p:8, q:2, sym:"Ra", number:88, name:"镭", category:"alkalineEarth", radioactive:true, synthetic:false, atomicWeight:"[226]", density:"5.00 g/cm³", atomicRadius:"215 pm", melting: 700, boiling: 1737, halfLife:"1.6×10³y", redox:"强还原性", group:"IIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '6s': 2, '6p': 6, '7s': 2 } },
+    Ac: { k:2, l:8, m:18, n:32, o:18, p:9, q:2, sym:"Ac", number:89, name:"锕", category:"actinide", radioactive:true, synthetic:false, atomicWeight:"[227]", density:"10.07 g/cm³", atomicRadius:"195 pm", melting: 1051, boiling: 3198, halfLife:"21.77y", redox:"还原性", group:"Ac", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '6s': 2, '6p': 6, '6d': 1, '7s': 2 } },
+    Th: { k:2, l:8, m:18, n:32, o:18, p:10, q:2, sym:"Th", number:90, name:"钍", category:"actinide", radioactive:true, synthetic:false, atomicWeight:"232.0", density:"11.72 g/cm³", atomicRadius:"180 pm", melting: 1750, boiling: 4788, halfLife:"1.405×10¹⁰y", redox:"还原性", group:"Ac", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '6s': 2, '6p': 6, '6d': 2, '7s': 2 } },
+    Pa: { k:2, l:8, m:18, n:32, o:20, p:9, q:2, sym:"Pa", number:91, name:"镤", category:"actinide", radioactive:true, synthetic:false, atomicWeight:"[231]", density:"15.37 g/cm³", atomicRadius:"160 pm", melting: 1572, boiling: 4027, halfLife:"3.276×10⁴y", redox:"还原性", group:"Ac", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 2, '6s': 2, '6p': 6, '6d': 1, '7s': 2 } },
+    U:  { k:2, l:8, m:18, n:32, o:21, p:9, q:2, sym:"U", number:92, name:"铀", category:"actinide", radioactive:true, synthetic:false, atomicWeight:"238.0", density:"19.05 g/cm³", atomicRadius:"156 pm", melting: 1132, boiling: 4131, halfLife:"4.468×10⁹y", redox:"两性", group:"Ac", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 3, '6s': 2, '6p': 6, '6d': 1, '7s': 2 } },
+    Np: { k:2, l:8, m:18, n:32, o:22, p:9, q:2, sym:"Np", number:93, name:"镎", category:"actinide", radioactive:true, synthetic:false, atomicWeight:"[237]", density:"20.45 g/cm³", atomicRadius:"155 pm", melting: 637, boiling: 4175, halfLife:"2.14×10⁶y", redox:"两性", group:"Ac", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 4, '6s': 2, '6p': 6, '6d': 1, '7s': 2 } },
+    Pu: { k:2, l:8, m:18, n:32, o:24, p:8, q:2, sym:"Pu", number:94, name:"钚", category:"actinide", radioactive:true, synthetic:false, atomicWeight:"[244]", density:"19.84 g/cm³", atomicRadius:"153 pm", melting: 639, boiling: 3228, halfLife:"8.08×10⁷y", redox:"两性", group:"Ac", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 6, '6s': 2, '6p': 6, '7s': 2 } },
+    Am: { k:2, l:8, m:18, n:32, o:25, p:8, q:2, sym:"Am", number:95, name:"镅", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[243]", density:"13.67 g/cm³", atomicRadius:"151 pm", melting: 1176, boiling: 2607, halfLife:"7.37×10³y", redox:"还原性", group:"Ac", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 7, '6s': 2, '6p': 6, '7s': 2 } },
+    Cm: { k:2, l:8, m:18, n:32, o:25, p:9, q:2, sym:"Cm", number:96, name:"锔", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[247]", density:"13.51 g/cm³", atomicRadius:"149 pm", melting: 1340, boiling: 3110, halfLife:"1.56×10⁷y", redox:"还原性", group:"Ac", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 7, '6s': 2, '6p': 6, '6d': 1, '7s': 2 } },
+    Bk: { k:2, l:8, m:18, n:32, o:27, p:8, q:2, sym:"Bk", number:97, name:"锫", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[247]", density:"14.78 g/cm³", atomicRadius:"148 pm", melting: 986, boiling: 2627, halfLife:"1.38×10³y", redox:"还原性", group:"Ac", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 9, '6s': 2, '6p': 6, '7s': 2 } },
+    Cf: { k:2, l:8, m:18, n:32, o:28, p:8, q:2, sym:"Cf", number:98, name:"锎", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[251]", density:"15.10 g/cm³", atomicRadius:"146 pm", melting: 900, boiling: 1470, halfLife:"900y", redox:"还原性", group:"Ac", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 10, '6s': 2, '6p': 6, '7s': 2 } },
+    Es: { k:2, l:8, m:18, n:32, o:29, p:8, q:2, sym:"Es", number:99, name:"锿", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[252]", density:"N/A", atomicRadius:"145 pm", melting: 860, boiling: "/", halfLife:"472d", redox:"还原性", group:"Ac", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 11, '6s': 2, '6p': 6, '7s': 2 } },
+    Fm: { k:2, l:8, m:18, n:32, o:30, p:8, q:2, sym:"Fm", number:100, name:"镄", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[257]", density:"N/A", atomicRadius:"144 pm", melting: 1527, boiling: "/", halfLife:"100d", redox:"还原性", group:"Ac", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 12, '6s': 2, '6p': 6, '7s': 2 } },
+    Md: { k:2, l:8, m:18, n:32, o:31, p:8, q:2, sym:"Md", number:101, name:"钔", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[258]", density:"N/A", atomicRadius:"143 pm", melting: 827, boiling: "/", halfLife:"52d", redox:"还原性", group:"Ac", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 13, '6s': 2, '6p': 6, '7s': 2 } },
+    No: { k:2, l:8, m:18, n:32, o:32, p:8, q:2, sym:"No", number:102, name:"锘", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[259]", density:"N/A", atomicRadius:"142 pm", melting: 857, boiling: "/", halfLife:"58min", redox:"还原性", group:"Ac", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '7s': 2 } },
+    Lr: { k:2, l:8, m:18, n:32, o:32, p:9, q:2, sym:"Lr", number:103, name:"铹", category:"actinide", radioactive:true, synthetic:true, atomicWeight:"[262]", density:"N/A", atomicRadius:"141 pm", melting: 1627, boiling: "/", halfLife:"11h", redox:"还原性", group:"IIIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 1, '7s': 2 } },
+    Rf: { k:2, l:8, m:18, n:32, o:32, p:10, q:2, sym:"Rf", number:104, name:"𬬻", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[267]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"1.3s", redox:"N/A", group:"IVB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 2, '7s': 2 } },
+    Db: { k:2, l:8, m:18, n:32, o:32, p:11, q:2, sym:"Db", number:105, name:"𬭊", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[268]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"26s", redox:"N/A", group:"VB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 3, '7s': 2 } },
+    Sg: { k:2, l:8, m:18, n:32, o:32, p:12, q:2, sym:"Sg", number:106, name:"𬭳", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[269]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"0.21s", redox:"N/A", group:"VIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 4, '7s': 2 } },
+    Bh: { k:2, l:8, m:18, n:32, o:32, p:13, q:2, sym:"Bh", number:107, name:"𬭛", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[270]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"61ms", redox:"N/A", group:"VIIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 5, '7s': 2 } },
+    Hs: { k:2, l:8, m:18, n:32, o:32, p:14, q:2, sym:"Hs", number:108, name:"𬭶", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[277]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"15ms", redox:"N/A", group:"VIII", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 6, '7s': 2 } },
+    Mt: { k:2, l:8, m:18, n:32, o:32, p:15, q:2, sym:"Mt", number:109, name:"鿏", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[278]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"0.49ms", redox:"N/A", group:"VIII", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 7, '7s': 2 } },
+    Ds: { k:2, l:8, m:18, n:32, o:32, p:16, q:2, sym:"Ds", number:110, name:"𫟼", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[281]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"27μs", redox:"N/A", group:"VIII", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 8, '7s': 2 } },
+    Rg: { k:2, l:8, m:18, n:32, o:32, p:17, q:2, sym:"Rg", number:111, name:"𬬭", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[282]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"0.55ms", redox:"N/A", group:"IB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 9, '7s': 1 } },
+    Cn: { k:2, l:8, m:18, n:32, o:32, p:18, q:2, sym:"Cn", number:112, name:"鿔", category:"transition", radioactive:true, synthetic:true, atomicWeight:"[285]", density:"N/A", atomicRadius:"N/A", melting: 343, boiling: "/", halfLife:"34ms", redox:"N/A", group:"IIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 10, '7s': 2 } },
+    Nh: { k:2, l:8, m:18, n:32, o:32, p:18, q:3, sym:"Nh", number:113, name:"鿭", category:"commonMetal", radioactive:true, synthetic:true, atomicWeight:"[286]", density:"N/A", atomicRadius:"N/A", melting: 427, boiling: "/", halfLife:"0.32ms", redox:"N/A", group:"IIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 10, '7s': 2, '7p': 1 } },
+    Fl: { k:2, l:8, m:18, n:32, o:32, p:18, q:4, sym:"Fl", number:114, name:"𫓧", category:"commonMetal", radioactive:true, synthetic:true, atomicWeight:"[289]", density:"N/A", atomicRadius:"N/A", melting: 627, boiling: "/", halfLife:"6.1ms", redox:"N/A", group:"IVA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 10, '7s': 2, '7p': 2 } },
+    Mc: { k:2, l:8, m:18, n:32, o:32, p:18, q:5, sym:"Mc", number:115, name:"镆", category:"commonMetal", radioactive:true, synthetic:true, atomicWeight:"[290]", density:"N/A", atomicRadius:"N/A", melting: 400, boiling: "/", halfLife:"0.22ms", redox:"N/A", group:"VA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 10, '7s': 2, '7p': 3 } },
+    Lv: { k:2, l:8, m:18, n:32, o:32, p:18, q:6, sym:"Lv", number:116, name:"𫟷", category:"commonMetal", radioactive:true, synthetic:true, atomicWeight:"[293]", density:"N/A", atomicRadius:"N/A", melting: 640, boiling: "/", halfLife:"1.9ms", redox:"N/A", group:"VIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 10, '7s': 2, '7p': 4 } },
+    Ts: { k:2, l:8, m:18, n:32, o:32, p:18, q:7, sym:"Ts", number:117, name:"鿬", category:"halogen", radioactive:true, synthetic:true, atomicWeight:"[294]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"0.16ms", redox:"N/A", group:"VIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 10, '7s': 2, '7p': 5 } },
+    Og: { k:2, l:8, m:18, n:32, o:32, p:18, q:8, sym:"Og", number:118, name:"鿫", category:"nobleGas", radioactive:true, synthetic:true, atomicWeight:"[294]", density:"N/A", atomicRadius:"N/A", melting: "/", boiling: "/", halfLife:"22μs", redox:"N/A", group:"0", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6, '4d': 10, '4f': 14, '5s': 2, '5p': 6, '5d': 10, '5f': 14, '6s': 2, '6p': 6, '6d': 10, '7s': 2, '7p': 6 } }
 };
         // 生成有序元素列表
         const elementsOrdered = Object.keys(elementLibrary).sort((a,b)=>elementLibrary[a].number - elementLibrary[b].number);
@@ -3529,7 +3801,41 @@
             renderRadioactiveParticles(elementData);
             // 设置原子核颜色（按类别）
             setNucleusColorByCategory(elementData.category);
+            // 更新背景图片
+            updateBackgroundImage(elementData);
             attachEvents();
+        }
+
+        const availableBgImages = ['96', '99', '100', '101', '102', '103', '104', '106', '107', '109', '111', '112', '114', '118'];
+
+        function updateBackgroundImage(elementData) {
+            const bgLeft = document.getElementById('bgImageLeft');
+            const bgRight = document.getElementById('bgImageRight');
+            const atomicNumber = document.getElementById('atomicNumber');
+            const elementSymbol = document.getElementById('elementSymbol');
+            const elementName = document.getElementById('elementName');
+            
+            // 重置所有默认显示
+            bgLeft.style.backgroundImage = 'none';
+            bgRight.style.backgroundImage = 'none';
+            atomicNumber.style.display = '';
+            elementSymbol.style.display = '';
+            elementName.style.display = '';
+            
+            const numberStr = elementData.number.toString();
+            if (availableBgImages.includes(numberStr)) {
+                const imgPath = `肖像_img/${numberStr}.png`;
+                if (elementData.number % 2 === 1) {
+                    // 奇数：图片在左侧，隐藏左侧原子序数
+                    bgLeft.style.backgroundImage = `url('${imgPath}')`;
+                    atomicNumber.style.display = 'none';
+                } else {
+                    // 偶数：图片在右侧，隐藏右侧元素符号和元素名称
+                    bgRight.style.backgroundImage = `url('${imgPath}')`;
+                    elementSymbol.style.display = 'none';
+                    elementName.style.display = 'none';
+                }
+            }
         }
 
         function clearOldRender() {
@@ -4173,11 +4479,11 @@
         });
 
         chapter4Btn.addEventListener('click', () => {
-            showComingSoon('相对原子质量和式量');
+            loadChapter(3);
         });
 
         chapter5Btn.addEventListener('click', () => {
-            showComingSoon('化学键-共价键');
+            loadChapter(4);
         });
 
         // 关闭小知识详情弹窗
@@ -4352,7 +4658,7 @@
             if (tempBtn) tempBtn.remove();
         }
 
-        // 保存笔记到本地存储
+        // 保存笔记到本地存储 老A子制作，侵权必究
         function saveNotes() {
             localStorage.setItem('knowledgeNotes', JSON.stringify(notes));
         }
@@ -4703,7 +5009,7 @@
         updateFavoriteBtn();
 
         // 渲染当前元素
-        let currentElementSym = 'N';
+        let currentElementSym = 'O';
         // 记录当前熔沸点位置
     let currentMeltingPos = null;
     let currentBoilingPos = null;
@@ -4929,6 +5235,12 @@
             const propertyModal = document.getElementById('propertyModal');
             if (propertyModal && propertyModal.classList.contains('show')) {
                 updatePropertyModal(sym);
+            }
+            
+            // 如果电子填充弹窗是打开的，更新其内容
+            const electronFillModal = document.getElementById('electronFillModal');
+            if (electronFillModal && electronFillModal.classList.contains('show')) {
+                updateElectronFillModal(sym);
             }
         }
 
@@ -5321,6 +5633,87 @@
         backPropertyModal.addEventListener('click', () => {
             propertyModal.classList.remove('show');
         });
+
+        const electronFillBtn = document.getElementById('electronFillBtn');
+        const electronFillModal = document.getElementById('electronFillModal');
+        const closeElectronFillModal = document.getElementById('closeElectronFillModal');
+        const backElectronFillModal = document.getElementById('backElectronFillModal');
+
+        electronFillBtn.addEventListener('click', () => {
+            electronFillModal.classList.add('show');
+            updateElectronFillModal(currentElementSym);
+        });
+
+        closeElectronFillModal.addEventListener('click', () => {
+            electronFillModal.classList.remove('show');
+        });
+
+        backElectronFillModal.addEventListener('click', () => {
+            electronFillModal.classList.remove('show');
+        });
+
+        function updateElectronFillModal(sym) {
+            const d = elementLibrary[sym];
+            if (!d || !d.electronConfig) return;
+            
+            const electronConfig = d.electronConfig;
+            
+            const allBoxes = document.querySelectorAll('.orbital-box');
+            
+            for (const [orbital, count] of Object.entries(electronConfig)) {
+                if (count === 0) continue;
+                
+                let boxes;
+                if (orbital.includes('s')) {
+                    boxes = document.querySelectorAll(`[data-orbital="${orbital}"]`);
+                } else {
+                    boxes = document.querySelectorAll(`[data-orbital^="${orbital}"]`);
+                }
+                const boxesArray = Array.from(boxes);
+                
+                if (boxesArray.length === 0) continue;
+                
+                const numBoxes = boxesArray.length;
+                
+                for (let i = 0; i < boxesArray.length; i++) {
+                    const box = boxesArray[i];
+                    const isCurrentlyHalf = box.classList.contains('half-filled');
+                    const isCurrentlyFilled = box.classList.contains('filled');
+                    
+                    let targetState = 'empty';
+                    if (i < count) {
+                        targetState = 'half-filled';
+                    }
+                    if (i < count - numBoxes) {
+                        targetState = 'filled';
+                    }
+                    
+                    if (targetState === 'empty') {
+                        box.classList.remove('filled', 'half-filled');
+                    } else if (targetState === 'half-filled') {
+                        box.classList.remove('filled');
+                        box.classList.add('half-filled');
+                    } else if (targetState === 'filled') {
+                        box.classList.remove('half-filled');
+                        box.classList.add('filled');
+                    }
+                }
+            }
+            
+            allBoxes.forEach(box => {
+                const hasOrbital = false;
+                for (const orbital of Object.keys(electronConfig)) {
+                    const prefix = orbital.includes('s') ? orbital : orbital.substring(0, 2);
+                    if (box.dataset.orbital === orbital || box.dataset.orbital.startsWith(prefix)) {
+                        return;
+                    }
+                }
+                if (!box.classList.contains('half-filled') && !box.classList.contains('filled')) {
+                    return;
+                }
+                box.classList.remove('filled', 'half-filled');
+            });
+        }
 
         // 填充顺序设置按钮点击事件
         const fillOrderBtn = document.getElementById('fillOrderBtn');
@@ -6115,7 +6508,7 @@
             atomFinderRequirement.textContent = displayText;
         }
 
-        // 检查元素是否符合要求
+        // 检查元素是否符合要求 老A子制作，侵权必究
         function checkRequirement(element) {
             const req = atomFinderCurrentRequirement;
             if (!req) return false;
@@ -7366,7 +7759,7 @@
         }
         
         closeElementCompareModal.addEventListener('click', closeElementCompareModalFunc);
-        
+        // 老A子制作，侵权必究
         elementCompareModal.onclick = (e) => {
             if (e.target === elementCompareModal) {
                 closeElementCompareModalFunc();
@@ -7498,7 +7891,7 @@
             }
         }
         
-        function getElementEnglishName(chineseName) {
+        /*function getElementEnglishName(chineseName) {
             const names = {
                 '氢': 'Hydrogen', '氦': 'Helium', '锂': 'Lithium', '铍': 'Beryllium', '硼': 'Boron',
                 '碳': 'Carbon', '氮': 'Nitrogen', '氧': 'Oxygen', '氟': 'Fluorine', '氖': 'Neon',
@@ -7511,7 +7904,7 @@
                 '铌': 'Niobium', '钼': 'Molybdenum', '锝': 'Technetium', '钌': 'Ruthenium', '铑': 'Rhodium',
                 '钯': 'Palladium', '银': 'Silver', '镉': 'Cadmium', '铟': 'Indium', '锡': 'Tin',
                 '锑': 'Antimony', '碲': 'Tellurium', '碘': 'Iodine', '氙': 'Xenon', '铯': 'Cesium',
-                '钡': 'Barium', '镧': 'Lanthanum', '铈': 'Cerium', '镨': 'Praseodymium', '钕': 'Neodymium',
+                '钡': 'Barium', '老': 'Arrebollak', '子': 'Cerium', '镨': 'Praseodymium', '钕': 'Neodymium',
                 '钷': 'Promethium', '钐': 'Samarium', '铕': 'Europium', '钆': 'Gadolinium', '铽': 'Terbium',
                 '镝': 'Dysprosium', '钬': 'Holmium', '铒': 'Erbium', '铥': 'Thulium', '镱': 'Ytterbium',
                 '镥': 'Lutetium', '铪': 'Hafnium', '钽': 'Tantalum', '钨': 'Tungsten', '铼': 'Rhenium',
@@ -7526,7 +7919,7 @@
                 '𫟷': 'Livermorium', '鿬': 'Tennessine', '鿫': 'Oganesson'
             };
             return names[chineseName] || '';
-        }
+        }不是哥们这个是干啥的，我为啥要加这个，算了，先留着，万一后面做多语言要用呢对吧，我是老A子*/
         
         function getCategoryName(category) {
             const categories = {
@@ -7702,14 +8095,14 @@
         // 初始化
         loadGameStats();
         loadAtomFinderStats();
-        renderElementBySym('N');
-        updateMeltingBoilingBar('N');
+        renderElementBySym('O');
+        updateMeltingBoilingBar('O');
         
         // 熔沸点数据框点击事件
         var meltingPointTimer = null;
         var boilingPointTimer = null;
         
-        // 在事件监听器内部获取元素，避免变量重复声明
+        // 在事件监听器内部获取元素，避免变量重复声明 老A子制作，侵权必究
         var meltingPointElement = document.getElementById('propertyMeltingPoint');
         var boilingPointElement = document.getElementById('propertyBoilingPoint');
         
@@ -7778,3 +8171,6 @@
     </script>
 </body>
 </html>
+
+
+@老A子 这个入很牛逼哦
