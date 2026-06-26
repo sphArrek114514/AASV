@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>原子结构模型</title>
+    <title>AASV</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -38,6 +38,94 @@
 
         .bg-image-right {
             right: 20px;
+        }
+
+        .loading-indicator {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: black;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        }
+
+        .loading-indicator #loadingCount {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            line-height: 1;
+        }
+
+        .loading-indicator .spinner {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #666;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-indicator .checkmark {
+            display: none;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            line-height: 1;
+        }
+
+        .loading-indicator.complete {
+            background-color: green;
+        }
+
+        .loading-indicator.complete .spinner {
+            display: none;
+        }
+
+        .loading-indicator.complete .checkmark {
+            display: block;
+        }
+
+        .loading-indicator.complete #loadingCount {
+            display: none;
+        }
+
+        .loading-indicator.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-tooltip {
+            position: fixed;
+            top: 75px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            z-index: 9999;
+            white-space: nowrap;
+            display: none;
+        }
+
+        .loading-indicator:hover + .loading-tooltip,
+        .loading-tooltip:hover {
+            display: block;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         .top-fixed {
@@ -1982,6 +2070,23 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        .knowledge-chapters::-webkit-scrollbar {
+            width: 6px;
+        }
+        .knowledge-chapters::-webkit-scrollbar-track {
+            background: #2a2a2a;
+            border-radius: 3px;
+        }
+        .knowledge-chapters::-webkit-scrollbar-thumb {
+            background: #9333ea;
+            border-radius: 3px;
+        }
+        .knowledge-chapters::-webkit-scrollbar-thumb:hover {
+            background: #a855f7;
         }
         .knowledge-chapter-btn {
             display: flex;
@@ -2031,6 +2136,58 @@
         }
         .knowledge-chapter-btn.disabled:hover .chapter-number {
             color: #666;
+        }
+
+        /* 图片放大预览 */
+        .image-preview-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999999999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: zoom-out;
+        }
+        .image-preview-modal.show {
+            display: flex;
+        }
+        .image-preview-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+            object-fit: contain;
+            transition: transform 0.1s ease-out;
+            transform-origin: center center;
+        }
+        .image-preview-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            z-index: 1;
+            background: none;
+            border: 1px solid #9333ea;
+            font-size: 24px;
+            color: #9333ea;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            font-weight: normal;
+            user-select: none;
+        }
+        .image-preview-close:hover {
+            background: #9333ea;
+            color: #000;
+            box-shadow: 0 4px 15px rgba(147, 51, 234, 0.6);
         }
 
         /* 打印区域（默认隐藏） */
@@ -2535,6 +2692,22 @@
                     <button class="knowledge-chapter-btn" id="chapter5Btn">
                         <span class="chapter-number">5</span>
                         <span class="chapter-text">化学键：离子键</span>
+                    </button>
+                    <button class="knowledge-chapter-btn" id="chapter6Btn">
+                        <span class="chapter-number">6</span>
+                        <span class="chapter-text">化学键：共价键</span>
+                    </button>
+                    <button class="knowledge-chapter-btn" id="chapter7Btn">
+                        <span class="chapter-number">7</span>
+                        <span class="chapter-text">简单的化学反应</span>
+                    </button>
+                    <button class="knowledge-chapter-btn disabled" id="chapter8Btn">
+                        <span class="chapter-number">8</span>
+                        <span class="chapter-text">宇宙中最轻的元素：氢</span>
+                    </button>
+                    <button class="knowledge-chapter-btn disabled" id="chapter9Btn">
+                        <span class="chapter-number">9</span>
+                        <span class="chapter-text">暴躁的金属：碱金属</span>
                     </button>
                 </div>
             </div>
@@ -3161,7 +3334,7 @@
                     </div>
                     <div class="update-log-item">
                         <span class="update-log-label">更新内容：</span>
-                        <span class="update-log-value">新增电子轨道填充状态显示，部分元素添加科学家肖像背景装饰，优化动画和UI</span>
+                        <span class="update-log-value">新增图片预加载，小知识页面新增图片放大显示，勘误部分元素的错误数据，优化使用体验，优化动画和UI</span>
                     </div>
                 </div>
             </div>
@@ -3225,6 +3398,19 @@
 
     <div class="bg-image-container bg-image-left" id="bgImageLeft"></div>
     <div class="bg-image-container bg-image-right" id="bgImageRight"></div>
+    
+    <div class="loading-indicator" id="loadingIndicator">
+        <div class="spinner"></div>
+        <span class="checkmark">✓</span>
+        <span id="loadingCount">14</span>
+    </div>
+    <div class="loading-tooltip" id="loadingTooltip">项目正在加载</div>
+
+    <!-- 图片放大预览模态框 -->
+    <div class="image-preview-modal" id="imagePreviewModal">
+        <button class="image-preview-close" id="imagePreviewClose">&times;</button>
+        <img id="imagePreviewImg" src="" alt="预览图片">
+    </div>
 
     <div class="atomWrapper" id="atomWrapper">
         <div class="atom">
@@ -3241,9 +3427,9 @@
         const startContent = document.querySelector('.start-content');
         
         // 版本元素配置 - 根据版本号自动获取对应元素
-        const VERSION = '8';
-        const UPDATE_DATE = '2026.6.19 00:00';
-        const IS_PRE_RELEASE = false;
+        const VERSION = '9';
+        const UPDATE_DATE = '2026.6.25 22:30';
+        const IS_PRE_RELEASE = true;
 
         // 获取版本号字符串
         function getVersionString() {
@@ -3516,8 +3702,49 @@
         document.getElementById('elementName').style.opacity = '0';
         document.getElementById('atomWrapper').style.opacity = '0';
         
+        // 预加载背景图片
+        const availableBgImages = ['96', '99', '100', '101', '102', '103', '104', '106', '107', '109', '111', '112', '114', '118'];
+        const knowledgeImages = ['1.png', '2.png', '3.png', '5.png', '6-1.png', '6-2.png', '7.png'];
+        const allPreloadImages = [
+            ...availableBgImages.map(n => ({ folder: '肖像_img', file: `${n}.png` })),
+            ...knowledgeImages.map(n => ({ folder: '小知识_img', file: n }))
+        ];
+        
+        function preloadImages() {
+            let remainingCount = allPreloadImages.length;
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const loadingCount = document.getElementById('loadingCount');
+            const loadingTooltip = document.getElementById('loadingTooltip');
+            
+            function updateStatus() {
+                remainingCount--;
+                loadingCount.textContent = remainingCount;
+                loadingTooltip.textContent = `${remainingCount}项正在加载`;
+                
+                if (remainingCount === 0) {
+                    loadingTooltip.textContent = '加载完成';
+                    loadingIndicator.classList.add('complete');
+                    setTimeout(() => {
+                        loadingIndicator.classList.add('hidden');
+                        loadingTooltip.style.display = 'none';
+                    }, 2000);
+                }
+            }
+            
+            // 同时加载所有图片
+            allPreloadImages.forEach(item => {
+                const img = new Image();
+                img.src = `${item.folder}/${item.file}`;
+                img.onload = updateStatus;
+                img.onerror = updateStatus;
+            });
+        }
+
         // 页面加载时生成随机原子
         window.addEventListener('load', function() {
+            // 预加载所有背景图片
+            preloadImages();
+            
             setTimeout(startAtomGeneration, 500);
             const startVersionEl = document.getElementById('startVersionDisplay');
             const startDateEl = document.getElementById('startDateDisplay');
@@ -3576,7 +3803,7 @@
     Li: { k:2, l:1, m:null, n:null, o:null, p:null, q:null, sym:"Li", number:3, name:"锂", category:"alkaliMetal", radioactive:false, synthetic:false, atomicWeight:"6.941", density:"0.534 g/cm³", atomicRadius:"167 pm", melting: 181, boiling: 1342, halfLife:"稳定", redox:"强还原性", group:"IA", electronConfig: { '1s': 2, '2s': 1 } },
     Be: { k:2, l:2, m:null, n:null, o:null, p:null, q:null, sym:"Be", number:4, name:"铍", category:"alkalineEarth", radioactive:false, synthetic:false, atomicWeight:"9.012", density:"1.85 g/cm³", atomicRadius:"112 pm", melting: 1287, boiling: 2471, halfLife:"稳定", redox:"还原性", group:"IIA", electronConfig: { '1s': 2, '2s': 2 } },
     B:  { k:2, l:3, m:null, n:null, o:null, p:null, q:null, sym:"B", number:5, name:"硼", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"10.81", density:"2.34 g/cm³", atomicRadius:"87 pm", melting: 2076, boiling: 3927, halfLife:"稳定", redox:"两性", group:"IIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 1 } },
-    C:  { k:2, l:4, m:null, n:null, o:null, p:null, q:null, sym:"C", number:6, name:"碳", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"12.01", density:"2.26 g/cm³", atomicRadius:"67 pm", melting: 3550, boiling: 4027, halfLife:"稳定", redox:"两性", group:"IVA", electronConfig: { '1s': 2, '2s': 2, '2p': 2 } },
+    C:  { k:2, l:4, m:null, n:null, o:null, p:null, q:null, sym:"C", number:6, name:"碳", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"12.01", density:"2.26 g/cm³", atomicRadius:"67 pm", melting: 3642, boiling: 3642, halfLife:"稳定", redox:"两性", group:"IVA", electronConfig: { '1s': 2, '2s': 2, '2p': 2 } },
     N:  { k:2, l:5, m:null, n:null, o:null, p:null, q:null, sym:"N", number:7, name:"氮", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"14.01", density:"0.001251 g/cm³", atomicRadius:"56 pm", melting: -210, boiling: -196, halfLife:"稳定", redox:"氧化性", group:"VA", electronConfig: { '1s': 2, '2s': 2, '2p': 3 } },
     O:  { k:2, l:6, m:null, n:null, o:null, p:null, q:null, sym:"O", number:8, name:"氧", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"16.00", density:"0.001429 g/cm³", atomicRadius:"48 pm", melting: -219, boiling: -183, halfLife:"稳定", redox:"强氧化性", group:"VIA", electronConfig: { '1s': 2, '2s': 2, '2p': 4 } },
     F:  { k:2, l:7, m:null, n:null, o:null, p:null, q:null, sym:"F", number:9, name:"氟", category:"halogen", radioactive:false, synthetic:false, atomicWeight:"19.00", density:"0.001696 g/cm³", atomicRadius:"42 pm", melting: -220, boiling: -188, halfLife:"稳定", redox:"强氧化性", group:"VIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 5 } },
@@ -3603,7 +3830,7 @@
     Zn: { k:2, l:8, m:18, n:2,  o:null, p:null, q:null, sym:"Zn", number:30, name:"锌", category:"transition", radioactive:false, synthetic:false, atomicWeight:"65.38", density:"7.14 g/cm³", atomicRadius:"142 pm", melting: 420, boiling: 907, halfLife:"稳定", redox:"还原性", group:"IIB", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2 } },
     Ga: { k:2, l:8, m:18, n:3,  o:null, p:null, q:null, sym:"Ga", number:31, name:"镓", category:"commonMetal", radioactive:false, synthetic:false, atomicWeight:"69.72", density:"5.91 g/cm³", atomicRadius:"136 pm", melting: 30, boiling: 2204, halfLife:"稳定", redox:"两性", group:"IIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 1 } },
     Ge: { k:2, l:8, m:18, n:4,  o:null, p:null, q:null, sym:"Ge", number:32, name:"锗", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"72.64", density:"5.32 g/cm³", atomicRadius:"123 pm", melting: 938, boiling: 2833, halfLife:"稳定", redox:"两性", group:"IVA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 2 } },
-    As: { k:2, l:8, m:18, n:5,  o:null, p:null, q:null, sym:"As", number:33, name:"砷", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"74.92", density:"5.73 g/cm³", atomicRadius:"119 pm", melting: null, boiling: 615, halfLife:"稳定", redox:"两性", group:"VA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 3 } },
+    As: { k:2, l:8, m:18, n:5,  o:null, p:null, q:null, sym:"As", number:33, name:"砷", category:"metalloid", radioactive:false, synthetic:false, atomicWeight:"74.92", density:"5.73 g/cm³", atomicRadius:"119 pm", melting: 615, boiling: 615, halfLife:"稳定", redox:"两性", group:"VA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 3 } },
     Se: { k:2, l:8, m:18, n:6,  o:null, p:null, q:null, sym:"Se", number:34, name:"硒", category:"nonmetal", radioactive:false, synthetic:false, atomicWeight:"78.96", density:"4.81 g/cm³", atomicRadius:"116 pm", melting: 221, boiling: 685, halfLife:"稳定", redox:"氧化性", group:"VIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 4 } },
     Br: { k:2, l:8, m:18, n:7,  o:null, p:null, q:null, sym:"Br", number:35, name:"溴", category:"halogen", radioactive:false, synthetic:false, atomicWeight:"79.90", density:"3.12 g/cm³", atomicRadius:"114 pm", melting: -7, boiling: 59, halfLife:"稳定", redox:"强氧化性", group:"VIIA", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 5 } },
     Kr: { k:2, l:8, m:18, n:8,  o:null, p:null, q:null, sym:"Kr", number:36, name:"氪", category:"nobleGas", radioactive:false, synthetic:false, atomicWeight:"83.80", density:"0.003733 g/cm³", atomicRadius:"109 pm", melting: -157, boiling: -153, halfLife:"稳定", redox:"N/A", group:"0", electronConfig: { '1s': 2, '2s': 2, '2p': 6, '3s': 2, '3p': 6, '3d': 10, '4s': 2, '4p': 6 } },
@@ -3805,8 +4032,6 @@
             updateBackgroundImage(elementData);
             attachEvents();
         }
-
-        const availableBgImages = ['96', '99', '100', '101', '102', '103', '104', '106', '107', '109', '111', '112', '114', '118'];
 
         function updateBackgroundImage(elementData) {
             const bgLeft = document.getElementById('bgImageLeft');
@@ -4351,6 +4576,8 @@
         const chapter3Btn = document.getElementById('chapter3Btn');
         const chapter4Btn = document.getElementById('chapter4Btn');
         const chapter5Btn = document.getElementById('chapter5Btn');
+        const chapter6Btn = document.getElementById('chapter6Btn');
+        const chapter7Btn = document.getElementById('chapter7Btn');
         
         // 小知识详情弹窗
         const knowledgeDetailModal = document.getElementById('knowledgeDetailModal');
@@ -4413,6 +4640,8 @@
                     applyNoteHighlights(data[chapterIndex].id);
                     // 设置字符点击处理器
                     setupTextClickHandlers();
+                    // 设置图片点击放大
+                    setupImageClickHandlers();
                 }, 100);
                 // 更新按钮状态
                 updateChapterNavButtons();
@@ -4430,7 +4659,12 @@
             const prevBtn = document.getElementById('prevChapterBtn');
             const nextBtn = document.getElementById('nextChapterBtn');
             prevBtn.disabled = currentChapterIndex <= 0;
-            if (currentChapterIndex >= knowledgeData.length - 1 || !knowledgeData[currentChapterIndex + 1]) {
+            
+            // 判断下一章节是否暂未开放
+            const nextChapterBtn = document.getElementById(`chapter${currentChapterIndex + 2}Btn`);
+            const isNextChapterDisabled = nextChapterBtn && nextChapterBtn.classList.contains('disabled');
+            
+            if (currentChapterIndex >= knowledgeData.length - 1 || !knowledgeData[currentChapterIndex + 1] || isNextChapterDisabled) {
                 nextBtn.disabled = true;
             } else {
                 nextBtn.disabled = false;
@@ -4458,17 +4692,18 @@
             }
         });
         document.getElementById('nextChapterBtn').addEventListener('click', () => {
-            if (currentChapterIndex < knowledgeData.length - 1 && knowledgeData[currentChapterIndex + 1]) {
+            const nextChapterBtn = document.getElementById(`chapter${currentChapterIndex + 2}Btn`);
+            const isNextChapterDisabled = nextChapterBtn && nextChapterBtn.classList.contains('disabled');
+            if (currentChapterIndex < knowledgeData.length - 1 && knowledgeData[currentChapterIndex + 1] && !isNextChapterDisabled) {
                 loadChapter(currentChapterIndex + 1);
             }
         });
 
-        // 章节2-5：预留章节（敬请期待）
-        function showComingSoon(title) {
+        /*function showComingSoon(title) {
             knowledgeDetailTitle.textContent = title;
             knowledgeDetailContent.innerHTML = '<p style="color: #aaa; text-align: center; padding: 40px 20px;">该章节内容正在编写中，敬请期待...</p>';
             openSubModal(knowledgeModal, knowledgeDetailModal);
-        }
+        }*/
 
         chapter2Btn.addEventListener('click', () => {
             loadChapter(1);
@@ -4484,6 +4719,14 @@
 
         chapter5Btn.addEventListener('click', () => {
             loadChapter(4);
+        });
+
+        chapter6Btn.addEventListener('click', () => {
+            loadChapter(5);
+        });
+
+        chapter7Btn.addEventListener('click', () => {
+            loadChapter(6);
         });
 
         // 关闭小知识详情弹窗
@@ -4666,7 +4909,7 @@
         // 渲染章节内容（修改为支持笔记选择）
         function renderChapterContent(content, chapterId) {
             let html = content
-                .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<div style="text-align: center; margin: 15px 0;"><img src="$2" alt="$1" style="max-width: 100%; border-radius: 8px;" onerror="this.style.display=\'none\'"></div>');
+                .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<div style="text-align: center; margin: 15px 0;"><img src="$2" alt="$1" style="max-width: 100%; border-radius: 8px; cursor: zoom-in;" class="knowledge-image" onerror="this.style.display=\'none\'"></div>');
             
             const paragraphs = html.split('\n\n');
             let result = '';
@@ -4703,6 +4946,126 @@
             });
             
             contentWrapper.innerHTML = html;
+        }
+
+        // 图片点击放大功能
+        let currentImageScale = 1;
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let imageOffsetX = 0;
+        let imageOffsetY = 0;
+        
+        function setupImageClickHandlers() {
+            const images = document.querySelectorAll('.knowledge-image');
+            images.forEach(img => {
+                img.addEventListener('click', function() {
+                    openImagePreview(this.src);
+                });
+            });
+        }
+
+        function openImagePreview(src) {
+            const modal = document.getElementById('imagePreviewModal');
+            const previewImg = document.getElementById('imagePreviewImg');
+            const closeBtn = document.getElementById('imagePreviewClose');
+            
+            currentImageScale = 1;
+            imageOffsetX = 0;
+            imageOffsetY = 0;
+            isDragging = false;
+            previewImg.src = src;
+            updateImageTransform();
+            modal.classList.add('show');
+            
+            // 点击关闭
+            closeBtn.onclick = closeImagePreview;
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    closeImagePreview();
+                }
+            };
+            
+            // 滚轮缩放
+            modal.addEventListener('wheel', handleImageWheel, { passive: false });
+            
+            // 鼠标拖动
+            previewImg.addEventListener('mousedown', handleImageDragStart);
+            document.addEventListener('mousemove', handleImageDragMove);
+            document.addEventListener('mouseup', handleImageDragEnd);
+            
+            // ESC键关闭
+            document.addEventListener('keydown', escCloseHandler);
+        }
+
+        function updateImageTransform() {
+            const previewImg = document.getElementById('imagePreviewImg');
+            previewImg.style.transform = `translate(${imageOffsetX}px, ${imageOffsetY}px) scale(${currentImageScale})`;
+        }
+
+        function handleImageDragStart(e) {
+            if (currentImageScale <= 1) return;
+            e.preventDefault();
+            e.stopPropagation();
+            isDragging = true;
+            dragStartX = e.clientX - imageOffsetX;
+            dragStartY = e.clientY - imageOffsetY;
+            const previewImg = document.getElementById('imagePreviewImg');
+            previewImg.style.cursor = 'grabbing';
+        }
+
+        function handleImageDragMove(e) {
+            if (!isDragging) return;
+            e.preventDefault();
+            e.stopPropagation();
+            imageOffsetX = e.clientX - dragStartX;
+            imageOffsetY = e.clientY - dragStartY;
+            updateImageTransform();
+        }
+
+        function handleImageDragEnd(e) {
+            if (!isDragging) return;
+            isDragging = false;
+            const previewImg = document.getElementById('imagePreviewImg');
+            previewImg.style.cursor = currentImageScale > 1 ? 'grab' : 'default';
+        }
+
+        function handleImageWheel(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const delta = e.deltaY > 0 ? -0.15 : 0.15;
+            const newScale = currentImageScale + delta;
+            currentImageScale = Math.max(0.2, Math.min(8, newScale));
+            if (currentImageScale <= 1) {
+                imageOffsetX = 0;
+                imageOffsetY = 0;
+            }
+            updateImageTransform();
+            const previewImg = document.getElementById('imagePreviewImg');
+            previewImg.style.cursor = currentImageScale > 1 ? 'grab' : 'default';
+        }
+
+        function closeImagePreview() {
+            const modal = document.getElementById('imagePreviewModal');
+            const previewImg = document.getElementById('imagePreviewImg');
+            modal.classList.remove('show');
+            currentImageScale = 1;
+            imageOffsetX = 0;
+            imageOffsetY = 0;
+            isDragging = false;
+            updateImageTransform();
+            previewImg.style.cursor = 'default';
+            modal.removeEventListener('wheel', handleImageWheel);
+            previewImg.removeEventListener('mousedown', handleImageDragStart);
+            document.removeEventListener('mousemove', handleImageDragMove);
+            document.removeEventListener('mouseup', handleImageDragEnd);
+            document.removeEventListener('keydown', escCloseHandler);
+        }
+
+        function escCloseHandler(e) {
+            if (e.key === 'Escape') {
+                closeImagePreview();
+            }
         }
 
         // 添加笔记高亮样式
@@ -5072,8 +5435,8 @@
         // 更新tooltip
         function updateTooltip() {
             let tooltipContent = '';
-            if (d.sym === 'As') {
-                tooltipContent += '常温下升华';
+            if (d.sym === 'As' || d.sym === 'C') {
+                tooltipContent += '常压下升华';
             } else if (d.melting !== null && d.melting !== '/') {
                 tooltipContent += `熔点: ${d.melting}°C`;
             } else {
@@ -5093,7 +5456,7 @@
             const meltingPoint = document.createElement('div');
             meltingPoint.className = 'melting-point';
             meltingPoint.style.top = position + '%';
-            meltingPoint.title = d.sym === 'As' ? '熔点: 常温下升华' : `熔点: ${d.melting}°C`;
+            meltingPoint.title = (d.sym === 'As' || d.sym === 'C') ? '熔点: 常压下升华' : `熔点: ${d.melting}°C`;
             bar.appendChild(meltingPoint);
         }
         
@@ -5107,11 +5470,11 @@
         }
         
         // 添加升华标记
-        function addSublimationPointMarker(position) {
+        function addSublimationPointMarker(position, customTitle) {
             const sublimationPoint = document.createElement('div');
             sublimationPoint.className = 'sublimation-point';
             sublimationPoint.style.top = position + '%';
-            sublimationPoint.title = `升华点: ${d.boiling}°C`;
+            sublimationPoint.title = customTitle || `升华点: ${d.boiling}°C`;
             bar.appendChild(sublimationPoint);
         }
         
@@ -5121,6 +5484,31 @@
         
         const meltingPos = getPosition(d.melting);
         const boilingPos = getPosition(d.boiling);
+        
+        // 特殊处理：碳（C）像砷一样显示升华
+        if (d.sym === 'C') {
+            // 碳在常压下升华，不显示熔点和升华点标记
+            if (boilingPos !== null) {
+                const aboveBoiling = document.createElement('div');
+                aboveBoiling.className = 'temperature-fill above-boiling';
+                aboveBoiling.style.top = '0%';
+                aboveBoiling.style.height = boilingPos + '%';
+                aboveBoiling.style.backgroundColor = 'rgba(173, 216, 230, 0.6)';
+                
+                const belowBoiling = document.createElement('div');
+                belowBoiling.className = 'temperature-fill below-boiling';
+                belowBoiling.style.top = boilingPos + '%';
+                belowBoiling.style.height = (100 - boilingPos) + '%';
+                belowBoiling.style.backgroundColor = 'rgba(139, 0, 0, 0.6)';
+                
+                bar.appendChild(aboveBoiling);
+                bar.appendChild(belowBoiling);
+                
+                currentMeltingPos = null;
+                currentBoilingPos = boilingPos;
+            }
+            return;
+        }
         
         // 特殊处理：没有沸点数据的元素，熔点以上全部显示空白
         if ((d.number === 99 || d.boiling === '/') && meltingPos !== null) {
@@ -5205,8 +5593,6 @@
             
             bar.appendChild(aboveBoiling);
             bar.appendChild(belowBoiling);
-            
-            addSublimationPointMarker(boilingPos);
             
             currentMeltingPos = null;
             currentBoilingPos = boilingPos;
@@ -8095,8 +8481,9 @@
         // 初始化
         loadGameStats();
         loadAtomFinderStats();
-        renderElementBySym('O');
-        updateMeltingBoilingBar('O');
+        const defaultElement = getVersionElement();
+        renderElementBySym(defaultElement.sym);
+        updateMeltingBoilingBar(defaultElement.sym);
         
         // 熔沸点数据框点击事件
         var meltingPointTimer = null;
